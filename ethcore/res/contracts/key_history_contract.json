@@ -76,6 +76,26 @@
   },
   {
     "constant": true,
+    "inputs": [],
+    "name": "getNumberOfKeyFragmentsWritten",
+    "outputs": [
+      {
+        "internalType": "uint128",
+        "name": "",
+        "type": "uint128"
+      },
+      {
+        "internalType": "uint128",
+        "name": "",
+        "type": "uint128"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
     "inputs": [
       {
         "internalType": "address",
@@ -134,6 +154,36 @@
         "internalType": "bool",
         "name": "",
         "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "numberOfAcksWritten",
+    "outputs": [
+      {
+        "internalType": "uint128",
+        "name": "",
+        "type": "uint128"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "numberOfPartsWritten",
+    "outputs": [
+      {
+        "internalType": "uint128",
+        "name": "",
+        "type": "uint128"
       }
     ],
     "payable": false,
@@ -226,12 +276,112 @@
         "type": "uint256"
       },
       {
+        "internalType": "bytes[]",
+        "name": "_acks",
+        "type": "bytes[]"
+      }
+    ],
+    "name": "writeAcksEmpty",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_upcommingEpoch",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes[]",
+        "name": "_acks",
+        "type": "bytes[]"
+      }
+    ],
+    "name": "writeAcksExternal",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_upcommingEpoch",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes[]",
+        "name": "_acks",
+        "type": "bytes[]"
+      }
+    ],
+    "name": "writeAcksExternalNoCheck",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_upcommingEpoch",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes[]",
+        "name": "_acks",
+        "type": "bytes[]"
+      }
+    ],
+    "name": "writeAcksPublicNoCheck",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_upcommingEpoch",
+        "type": "uint256"
+      },
+      {
         "internalType": "bytes",
         "name": "_part",
         "type": "bytes"
       }
     ],
     "name": "writePart",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_upcommingEpoch",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_part",
+        "type": "bytes"
+      }
+    ],
+    "name": "writePartEmpty",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",

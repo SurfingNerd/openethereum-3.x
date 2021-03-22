@@ -304,6 +304,21 @@
   {
     "constant": true,
     "inputs": [],
+    "name": "currentKeyGenExtraTimeWindow",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
     "name": "delegatorMinStake",
     "outputs": [
       {
@@ -672,6 +687,30 @@
       }
     ],
     "name": "moveStake",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_stakingAddress",
+        "type": "address"
+      }
+    ],
+    "name": "notifyAvailability",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "notifyKeyGenFailed",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",

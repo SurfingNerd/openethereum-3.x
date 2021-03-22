@@ -29,7 +29,6 @@ impl ChainSyncing for SyncProviderWrapper {
 
 pub fn hbbft_client() -> std::sync::Arc<Client> {
     let client = generate_dummy_client_with_spec(hbbft_spec);
-    // @todo Implement set_sync_provider function
     client.set_sync_provider(Box::new(SyncProviderWrapper()));
     client
 }
