@@ -33,7 +33,7 @@ pub fn unix_now_millis() -> u128 {
 }
 
 impl Contribution {
-    pub fn new(txns: &Vec<SignedTransaction>) -> Self {
+    pub fn new(txns: &Vec<SignedTransaction>, timestamp: u64) -> Self {
         let ser_txns: Vec<_> = txns
             .iter()
             .map(|txn| {
@@ -44,9 +44,12 @@ impl Contribution {
             .collect();
         let mut rng = rand_065::thread_rng();
 
+        //debug!("creating a contribution with TS {}", timestamp);
+        println!("creating a contribution with TS {}", timestamp);
+
         Contribution {
             transactions: ser_txns,
-            timestamp: unix_now_secs(),
+            timestamp: timestamp,
             random_data: rng
                 .sample_iter(&Standard)
                 .take(RANDOM_BYTES_PER_EPOCH)
@@ -61,13 +64,14 @@ mod tests {
     use engines::hbbft::test::test_helpers::create_transaction;
     use ethereum_types::U256;
     use types::transaction::{SignedTransaction, TypedTransaction};
+    use engines::hbbft::contribution::unix_now_secs;
 
     #[test]
     fn test_contribution_serialization() {
         let mut pending: Vec<SignedTransaction> = Vec::new();
         let keypair = Random.generate();
         pending.push(create_transaction(&keypair, &U256::from(1)));
-        let contribution = super::Contribution::new(&pending);
+        let contribution = super::Contribution::new(&pending, unix_now_secs());
 
         let deser_txns: Vec<_> = contribution
             .transactions

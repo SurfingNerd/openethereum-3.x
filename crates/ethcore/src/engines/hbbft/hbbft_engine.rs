@@ -803,6 +803,7 @@ impl Engine<EthereumMachine> for HoneyBadgerBFT {
 #[cfg(test)]
 mod tests {
     use super::super::contribution::Contribution;
+    use super::super::contribution::unix_now_secs;
     use super::super::test::test_helpers::create_transaction;
     use crypto::publickey::{Generator, Random};
     use ethereum_types::U256;
@@ -830,7 +831,7 @@ mod tests {
         let mut pending: Vec<SignedTransaction> = Vec::new();
         let keypair = Random.generate();
         pending.push(create_transaction(&keypair, &U256::from(1)));
-        let input_contribution = Contribution::new(&pending);
+        let input_contribution = Contribution::new(&pending, unix_now_secs());
 
         let step = honey_badger
             .propose(&input_contribution, &mut rng)

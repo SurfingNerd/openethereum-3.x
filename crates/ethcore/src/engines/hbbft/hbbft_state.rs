@@ -13,6 +13,7 @@ use super::contracts::keygen_history::{initialize_synckeygen, synckeygen_to_netw
 use super::contracts::staking::{get_posdao_epoch, get_posdao_epoch_start};
 use super::contracts::validator_set::ValidatorType;
 use super::contribution::Contribution;
+use super::contribution::unix_now_secs;
 use super::NodeId;
 
 pub type HbMessage = honey_badger::Message<NodeId>;
@@ -27,6 +28,7 @@ pub(crate) struct HbbftState {
 	public_master_key: Option<PublicKey>,
 	current_posdao_epoch: u64,
 	future_messages_cache: BTreeMap<u64, Vec<(NodeId, HbMessage)>>,
+	time_travel_offset: u64
 }
 
 impl HbbftState {
@@ -37,6 +39,7 @@ impl HbbftState {
 			public_master_key: None,
 			current_posdao_epoch: 0,
 			future_messages_cache: BTreeMap::new(),
+			time_travel_offset : 0
 		}
 	}
 
@@ -212,6 +215,23 @@ impl HbbftState {
 		}
 	}
 
+	pub fn time_travel_seconds(&mut self, seconds: u64) {
+		self.time_travel_offset += seconds;
+	}
+
+	// time travels to a target time for creating new contributions.
+	pub fn time_travel_to_target(&mut self, target_time: u64) {
+
+		let now = unix_now_secs();
+		assert!(target_time >= now, "timetravels are only allowed into the future.");
+
+		// checks, if we are not reducing the offset,
+		// so our new contributions are always newer than our old ones.account
+		assert!(target_time - now >= self.time_travel_offset, "timetravels only allowed into the future, respecting previous time travels.");
+
+		self.time_travel_offset = target_time - now;
+	}
+
 	pub fn contribute_if_contribution_threshold_reached(
 		&mut self,
 		client: Arc<dyn EngineClient>,
@@ -266,6 +286,7 @@ impl HbbftState {
 				.iter()
 				.map(|txn| txn.signed().clone())
 				.collect(),
+				unix_now_secs() + self.time_travel_offset
 		);
 
 		let mut rng = rand_065::thread_rng();
