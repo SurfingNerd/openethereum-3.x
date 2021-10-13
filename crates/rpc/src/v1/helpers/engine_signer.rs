@@ -53,7 +53,7 @@ impl ethcore::engines::EngineSigner for EngineSigner {
         self.accounts
             .decrypt(self.address, None, auth_data, cipher)
             .map_err(|e| {
-                warn!("Unable to decrypt message: {:?}", e);
+                warn!("Unable to decrypt message: {:?} data: {:?}  cypher {:?}", e, auth_data, cipher );
                 Error::InvalidMessage
             })
     }

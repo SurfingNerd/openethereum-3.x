@@ -101,7 +101,7 @@ mod test_signer {
             self.0
                 .decrypt(self.1, None, auth_data, cipher)
                 .map_err(|e| {
-                    warn!("Unable to decrypt message: {:?}", e);
+					warn!("Unable to decrypt message2: {:?} data: {:?}  cypher {:?}", e, auth_data, cipher );
                     Error::InvalidMessage
                 })
         }

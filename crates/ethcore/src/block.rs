@@ -364,6 +364,7 @@ impl<'x> OpenBlock<'x> {
         ));
         let uncle_bytes = encode_list(&s.block.uncles);
         s.block.header.set_uncles_hash(keccak(&uncle_bytes));
+		warn!(target: "sync", "setting state root to {}", s.block.state.root().clone());
         s.block.header.set_state_root(s.block.state.root().clone());
         s.block.header.set_receipts_root(ordered_trie_root(
             s.block.receipts.iter().map(|r| r.encode()),

@@ -307,6 +307,9 @@ fn verify_uncles(
 
 /// Phase 4 verification. Check block information against transaction enactment results,
 pub fn verify_block_final(expected: &Header, got: &Header) -> Result<(), Error> {
+
+	warn!(target: "sync", "verify_block_final: expected: {:?} got: {:?}", expected, got );
+
     if expected.state_root() != got.state_root() {
         return Err(From::from(BlockError::InvalidStateRoot(Mismatch {
             expected: *expected.state_root(),

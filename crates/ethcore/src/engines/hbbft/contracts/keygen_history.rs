@@ -127,6 +127,7 @@ pub fn acks_of_address(
     skg: &mut SyncKeyGen<Public, PublicWrapper>,
     block_id: BlockId,
 ) -> Result<(), CallError> {
+	warn!(target: "sync", "calling acks_of_address. address: {:?} block: {:?}", address, block_id);
     let c = BoundContract::bind(client, block_id, *KEYGEN_HISTORY_ADDRESS);
     let serialized_length = call_const_key_history!(c, get_acks_length, address)?;
 
@@ -177,6 +178,7 @@ impl<'a> PublicKey for PublicWrapper {
 impl<'a> SecretKey for KeyPairWrapper {
     type Error = crypto::publickey::Error;
     fn decrypt(&self, ct: &[u8]) -> Result<Vec<u8>, Self::Error> {
+		warn!(target: "sync", "secret key decrypt: {:?}", ct);
         self.inner
             .read()
             .as_ref()
