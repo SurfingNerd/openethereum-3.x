@@ -43,7 +43,8 @@ use ansi_term::Colour;
 use dir::{DatabaseDirectories, Directories};
 use ethcore::{
     client::{
-        BlockChainClient, BlockInfo, ChainSyncing, Client, DatabaseCompactionProfile, Mode, VMType,
+        BlockChainClient, BlockInfo, ChainSyncing, Client, DatabaseCompactionProfile, Mode,
+        ReservedPeersManagement, VMType,
     },
     miner::{self, stratum, Miner, MinerOptions, MinerService},
     snapshot::{self, SnapshotConfiguration},
@@ -139,6 +140,19 @@ impl crate::local_store::NodeInfo for FullNodeInfo {
                 _ => None,
             })
             .collect()
+    }
+}
+
+struct ReservedPeersWrapper {
+    manage_network: Weak<dyn sync::ManageNetwork>,
+}
+
+impl ReservedPeersManagement for ReservedPeersWrapper {
+    fn add_reserved_peer(&self, peer: String) -> Result<(), String> {
+        match self.manage_network.upgrade() {
+            Some(sync_arc) => sync_arc.add_reserved_peer(peer),
+            None => Err("ManageNetwork instance not available.".to_string()),
+        }
     }
 }
 
@@ -633,6 +647,10 @@ pub fn execute(cmd: RunCmd, logger: Arc<RotatingLogger>) -> Result<RunningClient
     client.set_sync_provider(Box::new(SyncProviderWrapper {
         sync_provider: Arc::downgrade(&sync_provider),
         client: Arc::downgrade(&client),
+    }));
+
+    client.set_reserved_peers_management(Box::new(ReservedPeersWrapper {
+        manage_network: Arc::downgrade(&manage_network),
     }));
 
     Ok(RunningClient {

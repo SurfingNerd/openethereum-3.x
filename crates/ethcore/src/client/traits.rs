@@ -214,6 +214,12 @@ pub trait ChainSyncing: Send + Sync {
     fn is_major_syncing(&self) -> bool;
 }
 
+/// Access to management of reserved peers in the network module.
+pub trait ReservedPeersManagement: Send + Sync {
+    /// Add a reserved peer
+    fn add_reserved_peer(&self, peer: String) -> Result<(), String>;
+}
+
 /// IO operations that should off-load heavy work to another thread.
 pub trait IoClient: Sync + Send {
     /// Queue transactions for importing.
@@ -294,7 +300,7 @@ pub trait BlockChainClient:
     /// Get value of the storage at given position at the latest block's state.
     fn latest_storage_at(&self, address: &Address, position: &H256) -> H256 {
         self.storage_at(address, position, BlockId::Latest.into())
-			.expect("storage_at will return Some if given BlockId::Latest. storage_at was given BlockId::Latest. \
+            .expect("storage_at will return Some if given BlockId::Latest. storage_at was given BlockId::Latest. \
 			Therefore storage_at has returned Some; qed")
     }
 

@@ -40,8 +40,8 @@ pub use self::{
         AccountData, BadBlocks, Balance, BlockChain, BlockChainClient, BlockChainReset, BlockInfo,
         BlockProducer, BroadcastProposalBlock, Call, ChainInfo, ChainSyncing, EngineClient,
         EngineInfo, ImportBlock, ImportExportBlocks, ImportSealedBlock, IoClient, Nonce,
-        PrepareOpenBlock, ProvingBlockChainClient, ReopenBlock, ScheduleInfo, SealedBlockImporter,
-        StateClient, StateOrBlock, TransactionInfo,
+        PrepareOpenBlock, ProvingBlockChainClient, ReopenBlock, ReservedPeersManagement,
+        ScheduleInfo, SealedBlockImporter, StateClient, StateOrBlock, TransactionInfo,
     },
 };
 pub use state::StateInfo;
