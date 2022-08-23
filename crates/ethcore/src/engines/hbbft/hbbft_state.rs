@@ -50,20 +50,43 @@ impl HbbftState {
         return Some(builder.build());
     }
 
+    // should honey badger be updated because the epoch is behind ?
+    // returns Some(target_posdao_epoch) if so, and None if not.
+    pub fn should_update_honeybadger(
+        &self,
+        client: Arc<dyn EngineClient>,
+        block_id: BlockId,
+        force: bool,
+    ) -> Option<u64> {
+        match get_posdao_epoch(&*client, block_id) {
+            Ok(target_posdao_epoch_u256) => {
+                let target_posdao_epoch = target_posdao_epoch_u256.low_u64();
+
+                if force {
+                    return Some(target_posdao_epoch);
+                } else if self.current_posdao_epoch == target_posdao_epoch {
+                    // hbbft state is already up to date.
+                    return None;
+                } else {
+                    return Some(target_posdao_epoch);
+                }
+            }
+            Err(call_error) => {
+                error!(target: "engine", "Could not read posdao epoch. {:?}", call_error);
+                panic!("Could not read posdao epoch");
+                //None
+            }
+        }
+    }
+
+    // assumes that should_update_honeybadger has been called, what only requires a readlock instead of a write lock.
     pub fn update_honeybadger(
         &mut self,
         client: Arc<dyn EngineClient>,
         signer: &Arc<RwLock<Option<Box<dyn EngineSigner>>>>,
         block_id: BlockId,
-        force: bool,
+        target_posdao_epoch: u64,
     ) -> Option<()> {
-        let target_posdao_epoch = get_posdao_epoch(&*client, block_id).ok()?.low_u64();
-        if !force && self.current_posdao_epoch == target_posdao_epoch {
-            // hbbft state is already up to date.
-            // @todo Return proper error codes.
-            return Some(());
-        }
-
         let posdao_epoch_start = get_posdao_epoch_start(&*client, block_id).ok()?;
         let synckeygen = initialize_synckeygen(
             &*client,
@@ -162,13 +185,17 @@ impl HbbftState {
         // Ensure we evaluate at the same block # in the entire upward call graph to avoid inconsistent state.
         let latest_block_number = client.block_number(BlockId::Latest)?;
 
+        let target_posdao_epoch = self
+            .should_update_honeybadger(client.clone(), BlockId::Number(latest_block_number), false)
+            .expect("Expected should_update_honeybadger to succeed");
+
         // Update honey_badger *before* trying to use it to make sure we use the data
         // structures matching the current epoch.
         self.update_honeybadger(
             client.clone(),
             signer,
             BlockId::Number(latest_block_number),
-            false,
+            target_posdao_epoch,
         );
 
         // If honey_badger is None we are not a validator, nothing to do.
