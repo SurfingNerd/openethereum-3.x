@@ -72,9 +72,8 @@ impl HbbftState {
                 }
             }
             Err(call_error) => {
-                error!(target: "engine", "Could not read posdao epoch. {:?}", call_error);
-                panic!("Could not read posdao epoch");
-                //None
+                error!(target: "engine", "Could not read posdao epoch. for block_id {:?} {:?}", block_id, call_error);
+                None
             }
         }
     }
