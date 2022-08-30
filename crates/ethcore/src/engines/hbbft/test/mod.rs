@@ -202,7 +202,7 @@ fn sync_two_validators() {
     moc.transfer_to(&transactor.address(), &transaction_funds);
 
     // Expect a new block to be created.
-    assert_eq!(moc.client.chain().best_block_number(), 1);
+    assert_eq!(moc.client.chain().best_block_number(), 1, "block could not be created");
 
     // Verify the pending validator is now funded.
     assert_eq!(moc.balance(&transactor.address()), transaction_funds);
