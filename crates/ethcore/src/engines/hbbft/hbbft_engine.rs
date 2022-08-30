@@ -840,16 +840,16 @@ impl HoneyBadgerBFT {
 
     fn check_for_epoch_change(&self) -> Option<()> {
         let client = self.client_arc()?;
-
+        let latest_block = BlockId::Number(client.block_number(BlockId::Latest)?);
         if let Some(target_posdao_epoch) = self.hbbft_state.read().should_update_honeybadger(
             client.clone(),
-            BlockId::Latest,
+            latest_block,
             false,
         ) {
             if let None = self.hbbft_state.write().update_honeybadger(
                 client,
                 &self.signer,
-                BlockId::Latest,
+                latest_block,
                 target_posdao_epoch,
             ) {
                 error!(target: "consensus", "Fatal: Updating Honey Badger instance failed!");
