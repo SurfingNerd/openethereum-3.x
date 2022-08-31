@@ -86,7 +86,19 @@ impl HbbftState {
         block_id: BlockId,
         target_posdao_epoch: u64,
     ) -> Option<()> {
-        let posdao_epoch_start = get_posdao_epoch_start(&*client, block_id).ok()?;
+        let posdao_epoch_start: ethereum_types::U256;
+        
+        //= get_posdao_epoch_start(&*client, block_id).ok()?;
+        //if let posdao
+
+        match get_posdao_epoch_start(&*client, block_id) {
+            Ok(value) => posdao_epoch_start = value,
+            Err(err) => {
+                error!(target: "engine", "could not get posdao epoch start at block {:?}. Error: {:?}", block_id, err);
+                return None;
+            },
+        }
+        
         let synckeygen = initialize_synckeygen(
             &*client,
             signer,
