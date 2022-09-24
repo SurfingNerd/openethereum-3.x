@@ -34,8 +34,7 @@ ethkey = { path = "../accounts/ethkey" }
 evm = { path = "../vm/evm" }
 globset = "0.4"
 hash-db = "0.11.0"
-hbbft = { git = "https://github.com/surfingnerd/hbbft", rev = "cf0c45aa669b9c10abab1a0f4f2b33595879b60b" }
-hbbft_testing = { git = "https://github.com/poanetwork/hbbft" }
+hbbft = { git = "https://github.com/poanetwork/hbbft", rev = "4857b7f9c7a0f513caca97c308d352c6a77fe5c2" }
 hex_fmt = "0.3.0"
 itertools = "0.5"
 journaldb = { path = "../db/journaldb" }

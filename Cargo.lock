@@ -1096,8 +1096,7 @@ dependencies = [
  "fetch",
  "globset",
  "hash-db 0.11.0",
- "hbbft 0.1.1 (git+https://github.com/surfingnerd/hbbft?rev=cf0c45aa669b9c10abab1a0f4f2b33595879b60b)",
- "hbbft_testing",
+ "hbbft 0.1.1 (git+https://github.com/poanetwork/hbbft?rev=4857b7f9c7a0f513caca97c308d352c6a77fe5c2)",
  "hex-literal",
  "hex_fmt",
  "itertools 0.5.10",
@@ -1956,27 +1955,6 @@ dependencies = [
  "rand 0.6.5",
  "rand_derive",
  "reed-solomon-erasure 3.1.1",
- "serde",
- "threshold_crypto",
- "tiny-keccak 2.0.2",
-]
-
-[[package]]
-name = "hbbft"
-version = "0.1.1"
-source = "git+https://github.com/surfingnerd/hbbft?rev=cf0c45aa669b9c10abab1a0f4f2b33595879b60b#cf0c45aa669b9c10abab1a0f4f2b33595879b60b"
-dependencies = [
- "bincode",
- "byteorder",
- "derivative 2.2.0",
- "env_logger 0.7.1",
- "failure",
- "hex_fmt",
- "init_with",
- "log",
- "rand 0.6.5",
- "rand_derive",
- "reed-solomon-erasure 4.0.2",
  "serde",
  "threshold_crypto",
  "tiny-keccak 2.0.2",
