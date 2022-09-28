@@ -65,7 +65,7 @@ use call_contract::RegistryInfo;
 use client::{
     ancient_import::AncientVerifier,
     bad_blocks,
-    traits::{ChainSyncing, ForceUpdateSealing, TransactionRequest},
+    traits::{ChainSyncing, ForceUpdateSealing, ReservedPeersManagement, TransactionRequest},
     AccountData, BadBlocks, Balance, BlockChain as BlockChainTrait, BlockChainClient,
     BlockChainReset, BlockId, BlockInfo, BlockProducer, BroadcastProposalBlock, Call,
     CallAnalytics, ChainInfo, ChainMessageType, ChainNotify, ChainRoute, ClientConfig,
@@ -256,6 +256,8 @@ pub struct Client {
 
     /// Accessor to query chain syncing state.
     sync_provider: Mutex<Option<Box<dyn ChainSyncing>>>,
+
+    reserved_peers_management: Mutex<Option<Box<dyn ReservedPeersManagement>>>,
 
     importer: Importer,
 }
@@ -1049,6 +1051,7 @@ impl Client {
             registrar_address,
             exit_handler: Mutex::new(None),
             sync_provider: Mutex::new(None),
+            reserved_peers_management: Mutex::new(None),
             importer,
             config,
         });
@@ -1167,6 +1170,14 @@ impl Client {
     /// Sets sync provider trait object to access chain sync state from the client/engine.
     pub fn set_sync_provider(&self, sync_provider: Box<dyn ChainSyncing>) {
         *self.sync_provider.lock() = Some(sync_provider);
+    }
+
+    /// Sets the accessor to reserved peers management functionality.
+    pub fn set_reserved_peers_management(
+        &self,
+        reserved_peers_management: Box<dyn ReservedPeersManagement>,
+    ) {
+        *self.reserved_peers_management.lock() = Some(reserved_peers_management);
     }
 
     /// Returns engine reference.
@@ -3160,6 +3171,7 @@ impl BroadcastProposalBlock for Client {
 impl SealedBlockImporter for Client {}
 
 impl ::miner::TransactionVerifierClient for Client {}
+
 impl ::miner::BlockChainClient for Client {}
 
 impl super::traits::EngineClient for Client {
@@ -3823,7 +3835,7 @@ mod tests {
                         transaction_index: 1,
                         transaction_log_index: 1,
                         log_index: 2,
-                    }
+                    },
                 ],
                 log_bloom: Default::default(),
                 outcome: TransactionOutcome::StateRoot(state_root),
