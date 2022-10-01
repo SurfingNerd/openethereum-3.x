@@ -5,7 +5,7 @@ use client::{
 use crypto::publickey::Public;
 use engines::hbbft::utils::bound_contract::{BoundContract, CallError};
 use ethereum_types::{Address, U256};
-use std::{collections::BTreeMap, str::FromStr};
+use std::{collections::BTreeMap, net::Ipv4Addr, str::FromStr};
 use types::{ids::BlockId, transaction::Error};
 
 use_contract!(
@@ -114,6 +114,41 @@ pub fn get_validator_available_since(
 pub fn get_pending_validators(client: &dyn EngineClient) -> Result<Vec<Address>, CallError> {
     let c = BoundContract::bind(client, BlockId::Latest, *VALIDATOR_SET_ADDRESS);
     call_const_validator!(c, get_pending_validators)
+}
+
+/// Sets this validators internet address.
+/// Can only be called if there is a pool existing for this signer.
+pub fn set_validator_internet_address(
+    full_client: &dyn BlockChainClient,
+    signer_address: &Address,
+    ip_address: &Ipv4Addr,
+    port: u16,
+) -> Result<(), Error> {
+    //let c = BoundContract::bind(client, BlockId::Latest, *VALIDATOR_SET_ADDRESS);
+
+    let octects = ip_address.octets();
+    let ip_address_array: [u8; 16] = [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, octects[0], octects[1], octects[2], octects[3],
+    ];
+
+    let port_array: [u8; 2] = [(port / 256) as u8, (port - (port / 256)) as u8];
+
+    let send_data = validator_set_hbbft::functions::set_validator_internet_address::call(
+        ip_address_array,
+        port_array,
+    );
+
+    let mut nonce = full_client
+        .nonce(signer_address, BlockId::Latest)
+        .unwrap_or_default();
+
+    let transaction = TransactionRequest::call(*VALIDATOR_SET_ADDRESS, send_data.0)
+        .gas(U256::from(100_000))
+        .nonce(nonce);
+
+    info!(target:"consensus", "set_validator_internet_address: ip: {} port: {} none: {}", ip_address, port, nonce);
+    full_client.transact_silently(transaction)?;
+    Ok(())
 }
 
 pub fn send_tx_announce_availability(
