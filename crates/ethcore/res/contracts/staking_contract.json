@@ -1160,7 +1160,7 @@
 				"type": "bytes2"
 			}
 		],
-		"name": "setValidatorIP",
+		"name": "setValidatorInternetAddress",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",

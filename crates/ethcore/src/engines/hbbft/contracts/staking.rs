@@ -1,7 +1,7 @@
 use client::EngineClient;
 use engines::hbbft::utils::bound_contract::{BoundContract, CallError};
 use ethereum_types::{Address, U256};
-use std::str::FromStr;
+use std::{str::FromStr, net::{SocketAddrV4, Ipv4Addr}};
 use types::ids::BlockId;
 
 use_contract!(staking_contract, "res/contracts/staking_contract.json");
@@ -38,6 +38,37 @@ pub fn start_time_of_next_phase_transition(client: &dyn EngineClient) -> Result<
 pub fn candidate_min_stake(client: &dyn EngineClient) -> Result<U256, CallError> {
     let c = BoundContract::bind(client, BlockId::Latest, *STAKING_CONTRACT_ADDRESS);
     call_const_staking!(c, candidate_min_stake)
+}
+
+pub fn get_validator_internet_address(client: &dyn EngineClient, staking_address: &Address)  -> Result<SocketAddrV4, CallError>  {
+    let c = BoundContract::bind(client, BlockId::Latest, *STAKING_CONTRACT_ADDRESS);
+    let result = call_const_staking!(c, get_pool_internet_address, staking_address.clone());
+    //staking_contract::functions::get_pool_internet_address::call()
+    
+    match result {
+        Ok((ip, port)) => {
+            //byteorder::new();
+            return Ok(SocketAddrV4::new(Ipv4Addr::new(ip[12], ip[13], ip[14], ip[15]), port[0] as u16 * 256 + port[1] as u16));
+        },
+        Err(e) => return Err(e),
+    }
+}
+
+pub fn set_validator_internet_address(client: &dyn EngineClient, staking_address: Address, ip_address: &Ipv4Addr, port: u16) {
+
+    let c = BoundContract::bind(client, BlockId::Latest, *STAKING_CONTRACT_ADDRESS);
+    
+    let octects = ip_address.octets();
+    let ip_address_array : [u8; 16] = [0,0,0,0,0,0,0,0,0,0,0,0,octects[0], octects[1], octects[2], octects[3]];
+
+    let port_array : [ u8; 2] = [(port / 256) as u8, (port - (port / 256)) as u8];
+    
+
+    let write_acks_data = staking_contract::functions::set_validator_internet_address::call(
+        staking_address,
+        ip_address_array,
+        port_array,
+    );
 }
 
 pub fn stake_amount(
