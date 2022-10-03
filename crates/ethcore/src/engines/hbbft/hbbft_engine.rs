@@ -130,11 +130,20 @@ impl TransitionHandler {
     fn max_block_time_remaining(&self, client: Arc<dyn EngineClient>) -> Duration {
         self.block_time_until(client, self.engine.params.maximum_block_time)
     }
+
+    /// executes all operations that have to be delayed after the chain has synced to the current tail.
+    /// returns: true if all delayed operation have been done now.
+    fn execute_delayed_unitl_synced_operations(&self) -> bool {
+        warn!(target: "consensus", "execute_delayed_unitl_synced_operations has been called");
+        true
+    }
 }
 
 // Arbitrary identifier for the timer we register with the event handler.
 const ENGINE_TIMEOUT_TOKEN: TimerToken = 1;
 const ENGINE_SHUTDOWN_IF_UNAVAILABLE: TimerToken = 2;
+// Some Operations should be executed if the chain is synced to the current tail.
+const ENGINE_DELAYED_UNITL_SYNCED_TOKEN: TimerToken = 3;
 
 impl IoHandler<()> for TransitionHandler {
     fn initialize(&self, io: &IoContext<()>) {
@@ -146,6 +155,9 @@ impl IoHandler<()> for TransitionHandler {
 
         io.register_timer(ENGINE_SHUTDOWN_IF_UNAVAILABLE, Duration::from_secs(1200))
             .unwrap_or_else(|e| warn!(target: "consensus", "HBBFT Shutdown Timer failed: {}.", e));
+
+        // io.register_timer_once(ENGINE_DELAYED_UNITL_SYNCED_TOKEN, Duration::from_secs(10))
+        //     .unwrap_or_else(|e| warn!(target: "consensus", "ENGINE_DELAYED_UNITL_SYNCED_TOKEN Timer failed: {}.", e));
     }
 
     fn timeout(&self, io: &IoContext<()>, timer: TimerToken) {
@@ -165,6 +177,7 @@ impl IoHandler<()> for TransitionHandler {
             if let Err(e) = self.engine.do_availability_handling() {
                 error!(target: "engine", "Error during do_availability_handling: {}", e)
             }
+
 
             // The client may not be registered yet on startup, we set the default duration.
             let mut timer_duration = DEFAULT_DURATION;
@@ -315,6 +328,16 @@ impl IoHandler<()> for TransitionHandler {
                     warn!(target: "consensus", "Could not query Honey Badger check if validator is staked. {:?}", error);
                 }
             }
+        } else if timer == ENGINE_DELAYED_UNITL_SYNCED_TOKEN {
+
+            if !self.execute_delayed_unitl_synced_operations() {
+                io.register_timer_once(ENGINE_DELAYED_UNITL_SYNCED_TOKEN, Duration::from_secs(10))
+                .unwrap_or_else(
+                    |e| warn!(target: "consensus", "Failed to restart Engine is syncedconsensus step timer: {}.", e),
+                );
+            } else {
+                trace!(target: "consensus", "All Operation that had to be done after syncing have been done now.");
+            }
         }
     }
 }
@@ -351,7 +374,6 @@ impl HoneyBadgerBFT {
                 .transition_service
                 .register_handler(Arc::new(handler))?;
         }
-
         Ok(engine)
     }
 
