@@ -15,7 +15,7 @@
 // along with OpenEthereum.  If not, see <http://www.gnu.org/licenses/>.
 
 use bytes::Bytes;
-use futures::{
+use std::future::{
     self,
     future::{self, Loop},
     sync::{mpsc, oneshot},
@@ -700,7 +700,7 @@ impl From<tokio::timer::Error> for Error {
 #[cfg(test)]
 mod test {
     use super::*;
-    use futures::{future, sync::oneshot};
+    use std::future::{future, sync::oneshot};
     use hyper::{service::Service, StatusCode};
     use std::{io::Read, net::SocketAddr};
     use tokio::{runtime::current_thread::Runtime, timer::Delay};

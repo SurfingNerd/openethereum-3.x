@@ -33,7 +33,7 @@ pub extern crate fetch;
 use std::{cmp, fmt, io, str};
 
 use fetch::{Client as FetchClient, Fetch};
-use futures::{
+use std::future::{
     future::{self, Either},
     Future, Stream,
 };

@@ -33,7 +33,7 @@ use self::{
 use ethereum_types::{H256, U256};
 use parking_lot::Mutex;
 
-use futures::Future;
+use std::future::Future;
 
 /// Trait for notifying about new mining work
 pub trait NotifyWork: Send + Sync {

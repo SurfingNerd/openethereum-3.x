@@ -26,7 +26,7 @@ use std::{
 };
 
 use ethereum_types::{Address, U256};
-use futures::{future, future::Either, sync::oneshot, Async, Future, Poll};
+use std::future::{future, future::Either, sync::oneshot, Async, Future, Poll};
 use parity_runtime::Executor;
 
 /// Manages currently reserved and prospective nonces

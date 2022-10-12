@@ -30,7 +30,7 @@ use std::{
     path::PathBuf,
 };
 
-use futures::Future;
+use std::future::Future;
 
 fn sign_interactive(signer: &mut SignerRpc, password: &str, request: ConfirmationRequest) {
     print!(

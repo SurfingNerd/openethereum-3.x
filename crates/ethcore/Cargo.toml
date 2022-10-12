@@ -27,7 +27,6 @@ ethcore-call-contract = { path = "../vm/call-contract" }
 ethcore-db = { path = "../db/db" }
 ethcore-io = { path = "../runtime/io" }
 ethcore-miner = { path = "../concensus/miner" }
-ethcore-stratum = { path = "../concensus/miner/stratum", optional = true }
 ethereum-types = "0.9.2"
 ethjson = { path = "../ethjson" }
 ethkey = { path = "../accounts/ethkey" }
@@ -101,12 +100,11 @@ tempdir = "0.3"
 trie-standardmap = "0.15.2"
 
 [features]
-parity = ["work-notify", "price-info", "stratum"]
+parity = ["work-notify", "price-info"]
 # Large optional features that are enabled by default for Parity,
 # but might be omitted for other dependent crates.
 work-notify = ["ethcore-miner/work-notify"]
 price-info = ["ethcore-miner/price-info"]
-stratum = [ "ethcore-stratum" ]
 
 
 # Disables seal verification for mined blocks.

@@ -16,7 +16,7 @@
 
 use client::{Rpc, RpcError};
 use ethereum_types::U256;
-use futures::Canceled;
+use std::future::Canceled;
 use rpc::signer::{ConfirmationRequest, TransactionCondition, TransactionModification};
 use serde;
 use serde_json::{to_value, Value as JsonValue};

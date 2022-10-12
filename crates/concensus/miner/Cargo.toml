@@ -22,7 +22,6 @@ ethabi-derive = { git = 'https://github.com/rimrakhimov/ethabi', branch = 'rimra
 ethabi-contract = "11.0.0"
 ethcore-call-contract = { path = "../../vm/call-contract" }
 ethereum-types = "0.9.2"
-futures = "0.1"
 keccak-hash = "0.5.0"
 linked-hash-map = "0.5"
 log = "0.4"

@@ -15,7 +15,7 @@
 // along with OpenEthereum.  If not, see <http://www.gnu.org/licenses/>.
 
 use deque;
-use futures::future::{self, Loop};
+use std::future::future::{self, Loop};
 use service_mio::{HandlerId, IoChannel, IoContext};
 use std::{
     sync::{

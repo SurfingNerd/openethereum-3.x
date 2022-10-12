@@ -19,7 +19,7 @@ extern crate futures;
 extern crate hyper;
 
 use fetch::{Fetch, Request, Url};
-use futures::{future, future::FutureResult};
+use std::future::{future, future::FutureResult};
 use hyper::{Body, StatusCode};
 
 #[derive(Clone, Default)]

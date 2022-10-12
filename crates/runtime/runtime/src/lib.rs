@@ -16,19 +16,17 @@
 
 //! Tokio Runtime wrapper.
 
-pub extern crate futures;
 pub extern crate tokio;
 
-use futures::{future, Future, IntoFuture};
+use std::future::{Future};
 use std::{
     fmt,
     sync::mpsc,
     thread,
-    time::{Duration, Instant},
+    time::{Duration, Instant}, future::IntoFuture,
 };
 pub use tokio::{
-    runtime::{Builder as TokioRuntimeBuilder, Runtime as TokioRuntime, TaskExecutor},
-    timer::Delay,
+    runtime::{Builder as TokioRuntimeBuilder, Runtime as TokioRuntime},
 };
 
 /// Runtime for futures.
@@ -45,6 +43,7 @@ impl Runtime {
             "Building a Tokio runtime will only fail when mio components \
 				cannot be initialized (catastrophic)",
         );
+        
         let (stop, stopped) = futures::oneshot();
         let (tx, rx) = mpsc::channel();
         let handle = thread::spawn(move || {
@@ -136,7 +135,7 @@ where
     R: IntoFuture<Item = (), Error = ()> + Send + 'static,
     R::Future: Send + 'static,
 {
-    let future = future::lazy(f);
+    let future = std::future::lazy(f);
     let timeout = Delay::new(Instant::now() + duration).then(move |_| {
         on_timeout();
         Ok(())

@@ -38,7 +38,7 @@ use ws::ws::{
 use serde::de::DeserializeOwned;
 use serde_json::{self as json, Error as JsonError, Value as JsonValue};
 
-use futures::{done, oneshot, Canceled, Complete, Future};
+use std::future::{done, oneshot, Canceled, Complete, Future};
 
 use jsonrpc_core::{
     request::MethodCall,
