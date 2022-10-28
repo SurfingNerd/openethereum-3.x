@@ -178,7 +178,6 @@ impl IoHandler<()> for TransitionHandler {
                 error!(target: "engine", "Error during do_availability_handling: {}", e)
             }
 
-
             // The client may not be registered yet on startup, we set the default duration.
             let mut timer_duration = DEFAULT_DURATION;
             if let Some(ref weak) = *self.client.read() {
@@ -329,7 +328,6 @@ impl IoHandler<()> for TransitionHandler {
                 }
             }
         } else if timer == ENGINE_DELAYED_UNITL_SYNCED_TOKEN {
-
             if !self.execute_delayed_unitl_synced_operations() {
                 io.register_timer_once(ENGINE_DELAYED_UNITL_SYNCED_TOKEN, Duration::from_secs(10))
                 .unwrap_or_else(
