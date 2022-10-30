@@ -105,6 +105,7 @@ mod metrics;
 mod modules;
 mod params;
 mod presale;
+mod reserved_peer_management;
 mod rpc;
 mod rpc_apis;
 mod run;
@@ -113,7 +114,6 @@ mod signer;
 mod snapshot;
 mod upgrade;
 mod user_defaults;
-mod reserved_peer_management;
 
 use std::{fs::File, io::BufReader, sync::Arc};
 

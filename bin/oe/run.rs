@@ -35,9 +35,10 @@ use crate::{
         fatdb_switch_to_bool, mode_switch_to_bool, tracing_switch_to_bool, AccountsConfig,
         GasPricerConfig, MinerExtras, Pruning, SpecType, Switch,
     },
+    reserved_peer_management::ReservedPeersWrapper,
     rpc, rpc_apis, secretstore, signer,
     sync::{self, SyncConfig, SyncProvider},
-    user_defaults::UserDefaults, reserved_peer_management::ReservedPeersWrapper,
+    user_defaults::UserDefaults,
 };
 use ansi_term::Colour;
 use dir::{DatabaseDirectories, Directories};
@@ -631,9 +632,9 @@ pub fn execute(cmd: RunCmd, logger: Arc<RotatingLogger>) -> Result<RunningClient
         client: Arc::downgrade(&client),
     }));
 
-    client.set_reserved_peers_management(Box::new(ReservedPeersWrapper::new(
-        Arc::downgrade(&manage_network))
-    ));
+    client.set_reserved_peers_management(Box::new(ReservedPeersWrapper::new(Arc::downgrade(
+        &manage_network,
+    ))));
 
     Ok(RunningClient {
         inner: RunningClientInner::Full {
