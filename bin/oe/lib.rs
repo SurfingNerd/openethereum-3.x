@@ -113,6 +113,7 @@ mod signer;
 mod snapshot;
 mod upgrade;
 mod user_defaults;
+mod reserved_peer_management;
 
 use std::{fs::File, io::BufReader, sync::Arc};
 

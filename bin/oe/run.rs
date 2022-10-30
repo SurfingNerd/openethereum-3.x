@@ -37,7 +37,7 @@ use crate::{
     },
     rpc, rpc_apis, secretstore, signer,
     sync::{self, SyncConfig, SyncProvider},
-    user_defaults::UserDefaults,
+    user_defaults::UserDefaults, reserved_peer_management::ReservedPeersWrapper,
 };
 use ansi_term::Colour;
 use dir::{DatabaseDirectories, Directories};
@@ -136,19 +136,6 @@ impl crate::local_store::NodeInfo for FullNodeInfo {
                 _ => None,
             })
             .collect()
-    }
-}
-
-struct ReservedPeersWrapper {
-    manage_network: Weak<dyn sync::ManageNetwork>,
-}
-
-impl ReservedPeersManagement for ReservedPeersWrapper {
-    fn add_reserved_peer(&self, peer: String) -> Result<(), String> {
-        match self.manage_network.upgrade() {
-            Some(sync_arc) => sync_arc.add_reserved_peer(peer),
-            None => Err("ManageNetwork instance not available.".to_string()),
-        }
     }
 }
 
@@ -644,9 +631,9 @@ pub fn execute(cmd: RunCmd, logger: Arc<RotatingLogger>) -> Result<RunningClient
         client: Arc::downgrade(&client),
     }));
 
-    client.set_reserved_peers_management(Box::new(ReservedPeersWrapper {
-        manage_network: Arc::downgrade(&manage_network),
-    }));
+    client.set_reserved_peers_management(Box::new(ReservedPeersWrapper::new(
+        Arc::downgrade(&manage_network))
+    ));
 
     Ok(RunningClient {
         inner: RunningClientInner::Full {
