@@ -99,6 +99,15 @@ impl HbbftState {
 
         let network_info = synckeygen_to_network_info(&synckeygen, pks, sks)?;
         self.network_info = Some(network_info.clone());
+
+        // this is the latest moment in time where we need to update the network reserved peers config
+        // if we are a validator
+        // and also deregister the old peers that we do not need anymore.
+        // also move into the protected inner layer of the Diamond Shield security Model. 
+
+        
+
+
         self.honey_badger = Some(self.new_honey_badger(network_info)?);
 
         info!(target: "engine", "HoneyBadger Algorithm initialized! Running as validator node.");

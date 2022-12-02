@@ -1515,9 +1515,9 @@ impl ChainSync {
         let chain = io.chain().chain_info();
         packet.append(&(protocol as u32));
         packet.append(&self.network_id);
-        packet.append(&primitive_types07::U256(chain.total_difficulty.0));
-        packet.append(&primitive_types07::H256(chain.best_block_hash.0));
-        packet.append(&primitive_types07::H256(chain.genesis_hash.0));
+        packet.append(&primitive_types::U256(chain.total_difficulty.0));
+        packet.append(&primitive_types::H256(chain.best_block_hash.0));
+        packet.append(&primitive_types::H256(chain.genesis_hash.0));
         if eth_protocol_version >= ETH_PROTOCOL_VERSION_64.0 {
             packet.append(&self.fork_filter.current(io.chain()));
         }
@@ -1525,7 +1525,7 @@ impl ChainSync {
             let manifest = io.snapshot_service().manifest();
             let block_number = manifest.as_ref().map_or(0, |m| m.block_number);
             let manifest_hash = manifest.map_or(H256::default(), |m| keccak(m.into_rlp()));
-            packet.append(&primitive_types07::H256(manifest_hash.0));
+            packet.append(&primitive_types::H256(manifest_hash.0));
             packet.append(&block_number);
         }
         packet.finalize_unbounded_list();

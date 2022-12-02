@@ -19,7 +19,7 @@ impl ForkFilterApi {
         forks: I,
     ) -> Self {
         let chain_info = client.chain_info();
-        let genesis_hash = primitive_types07::H256::from_slice(&chain_info.genesis_hash.0);
+        let genesis_hash = primitive_types::H256::from_slice(&chain_info.genesis_hash.0);
         Self {
             inner: ForkFilter::new(chain_info.best_block_number, genesis_hash, forks),
         }
@@ -32,7 +32,7 @@ impl ForkFilterApi {
         Self {
             inner: ForkFilter::new(
                 chain_info.best_block_number,
-                primitive_types07::H256::from_slice(&chain_info.genesis_hash.0),
+                primitive_types::H256::from_slice(&chain_info.genesis_hash.0),
                 vec![],
             ),
         }
@@ -74,7 +74,7 @@ mod tests {
             ForkFilterApi::new(&client, spec_forks).inner,
             ForkFilter::new(
                 0,
-                primitive_types07::H256::from_slice(&genesis_hash.0),
+                primitive_types::H256::from_slice(&genesis_hash.0),
                 forks
             )
         );

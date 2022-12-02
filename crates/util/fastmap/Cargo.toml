@@ -6,5 +6,5 @@ description = "Specialized version of `HashMap` with H256 keys and fast hashing 
 license = "GPL-3.0"
 
 [dependencies]
-ethereum-types = "0.9.2"
+ethereum-types = { version = "0.14.0", default-features = false }
 plain_hasher = "0.2"

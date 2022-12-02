@@ -39,7 +39,6 @@ extern crate parity_crypto as crypto;
 extern crate parity_util_mem;
 extern crate crossbeam_channel;
 extern crate parking_lot;
-extern crate primitive_types07;
 extern crate rand;
 extern crate rand_xorshift;
 extern crate rlp;

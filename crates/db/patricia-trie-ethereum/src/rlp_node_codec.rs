@@ -85,6 +85,7 @@ impl NodeCodec<KeccakHasher> for RlpNodeCodec<KeccakHasher> {
     fn try_decode_hash(data: &[u8]) -> Option<<KeccakHasher as Hasher>::Out> {
         let r = Rlp::new(data);
         if r.is_data() && r.size() == KeccakHasher::LENGTH {
+            r.decoder().decode_value(f)
             Some(r.as_val().expect("Hash is the correct size; qed"))
         } else {
             None
@@ -96,6 +97,7 @@ impl NodeCodec<KeccakHasher> for RlpNodeCodec<KeccakHasher> {
     fn empty_node() -> Vec<u8> {
         let mut stream = RlpStream::new();
         stream.append_empty_data();
+        
         stream.drain()
     }
 
