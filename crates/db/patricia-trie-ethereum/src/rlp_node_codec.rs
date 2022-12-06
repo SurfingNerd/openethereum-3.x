@@ -21,7 +21,7 @@ use ethereum_types::H256;
 use hash_db::Hasher;
 use keccak_hasher::KeccakHasher;
 use rlp::{DecoderError, Prototype, Rlp, RlpStream};
-use std::marker::PhantomData;
+use std::{marker::PhantomData};
 use trie::{node::Node, ChildReference, NibbleSlice, NodeCodec};
 
 /// Concrete implementation of a `NodeCodec` with Rlp encoding, generic over the `Hasher`
@@ -85,8 +85,10 @@ impl NodeCodec<KeccakHasher> for RlpNodeCodec<KeccakHasher> {
     fn try_decode_hash(data: &[u8]) -> Option<<KeccakHasher as Hasher>::Out> {
         let r = Rlp::new(data);
         if r.is_data() && r.size() == KeccakHasher::LENGTH {
-            r.decoder().decode_value(f)
-            Some(r.as_val().expect("Hash is the correct size; qed"))
+            
+            let value = r.decoder().decode_value( |f| Ok(H256::from_slice(f)));
+
+            Some(value.expect("Hash is the correct size; qed"))
         } else {
             None
         }
