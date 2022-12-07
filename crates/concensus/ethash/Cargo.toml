@@ -8,7 +8,7 @@ authors = ["Parity Technologies <admin@parity.io>"]
 crunchy = "0.1.0"
 either = "1.0.0"
 ethereum-types = { version = "0.14.0", features = [ "rlp" ] }
-keccak-hash = "0.5.0"
+keccak-hash = "0.10.0"
 tiny-keccak = "2.0.2"
 log = "0.4"
 memmap = "0.6"

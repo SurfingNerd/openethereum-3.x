@@ -50,7 +50,7 @@ ethjson = { path = "../ethjson" }
 ethkey = { path = "../accounts/ethkey" }
 ethstore = { path = "../accounts/ethstore" }
 fetch = { path = "../net/fetch" }
-keccak-hash = "0.5.0"
+keccak-hash = "0.10.0"
 parity-runtime = { path = "../runtime/runtime" }
 parity-version = { path = "../util/version" }
  rlp = { version = "0.5.2" }

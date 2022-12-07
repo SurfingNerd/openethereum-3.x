@@ -38,7 +38,7 @@ hbbft_testing = { git = "https://github.com/poanetwork/hbbft" }
 hex_fmt = "0.3.0"
 itertools = "0.5"
 journaldb = { path = "../db/journaldb" }
-keccak-hash = "0.5.0"
+keccak-hash = "0.10.0"
 keccak-hasher = { path = "../util/keccak-hasher" }
 kvdb = "0.1"
 kvdb-memorydb = "0.1"

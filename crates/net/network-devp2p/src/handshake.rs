@@ -266,7 +266,7 @@ impl Handshake {
             return Err(ErrorKind::BadProtocol.into());
         }
         self.ack_cipher = data.to_vec();
-        match ecies::decrypt(secret, data) {
+        match ecies::decrypt(secret, &[], data) {
             Ok(ack) => {
                 self.remote_ephemeral = Public::from_slice(&ack[0..64]);
                 self.remote_nonce = H256::from_slice(&ack[64..(64 + 32)]);
@@ -375,7 +375,7 @@ impl Handshake {
         let pad = &pad_array[0..100 + random::<usize>() % 100];
         rlp.append_raw(pad, 0);
 
-        let encoded = rlp.drain();
+        let encoded = rlp.out().to_vec();
         let len = (encoded.len() + ECIES_OVERHEAD) as u16;
         let prefix = [(len >> 8) as u8, (len & 0xff) as u8];
         let message = ecies::encrypt(&self.id, &prefix, &encoded)?;

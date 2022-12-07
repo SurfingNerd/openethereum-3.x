@@ -409,7 +409,7 @@ impl<'a> Discovery<'a> {
         node.endpoint.to_rlp_list(&mut rlp);
         append_expiration(&mut rlp);
         let old_parity_hash = keccak(rlp.as_raw());
-        let hash = self.send_packet(PACKET_PING, &node.endpoint.udp_address(), &rlp.drain())?;
+        let hash = self.send_packet(PACKET_PING, &node.endpoint.udp_address(), &rlp.out().to_vec())?;
 
         self.in_flight_pings.insert(
             node.id,
@@ -430,7 +430,7 @@ impl<'a> Discovery<'a> {
         let mut rlp = RlpStream::new_list(2);
         rlp.append(target);
         append_expiration(&mut rlp);
-        self.send_packet(PACKET_FIND_NODE, &node.endpoint.udp_address(), &rlp.drain())?;
+        self.send_packet(PACKET_FIND_NODE, &node.endpoint.udp_address(), &rlp.out().to_vec())?;
 
         self.in_flight_find_nodes.insert(
             node.id,
@@ -776,10 +776,9 @@ impl<'a> Discovery<'a> {
                 rlp.append(&n.id);
             }
             append_expiration(&mut rlp);
-            rlp.out()
+            rlp.out().to_vec()
         });
-        let c = packets.collect();
-        
+        packets.collect()
     }
 
     fn on_neighbours(

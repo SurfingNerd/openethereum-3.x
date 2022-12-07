@@ -16,13 +16,13 @@ ethcore-io = { path = "../../runtime/io" }
 ethcore-network = { path = "../../net/network" }
 ethcore-network-devp2p = { path = "../../net/network-devp2p" }
 ethcore-miner = { path = "../../concensus/miner" }
-ethereum-forkid = "0.2.2"
+ethereum-forkid = "0.11.1"
 ethereum-types = { version = "0.14.0", features = [ "rlp" ] }
 ethkey = { path = "../../accounts/ethkey" }
 ethstore = { path = "../../accounts/ethstore" }
 fastmap = { path = "../../util/fastmap" }
 hash-db = "0.11.0"
-keccak-hash = "0.5.0"
+keccak-hash = "0.10.0"
 keccak-hasher = { path = "../../util/keccak-hasher" }
 kvdb = "0.1"
 log = "0.4"

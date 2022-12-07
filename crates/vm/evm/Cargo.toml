@@ -11,7 +11,7 @@ ethereum-types = { version = "0.14.0", features = [ "rlp" ] }
 lazy_static = "1.0"
 log = "0.4"
 vm = { path = "../vm" }
-keccak-hash = "0.5.0"
+keccak-hash = "0.10.0"
 parity-util-mem = "0.7"
 parking_lot = "0.11.1"
 memory-cache = { path = "../../util/memory-cache" }

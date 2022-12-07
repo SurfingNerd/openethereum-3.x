@@ -10,4 +10,4 @@ ethereum-types = { version = "0.14.0", features = [ "rlp" ] }
 patricia-trie-ethereum = { path = "../../db/patricia-trie-ethereum" }
 ethjson = { path = "../../ethjson" }
  rlp = { version = "0.5.2" }
-keccak-hash = "0.5.0"
+keccak-hash = "0.10.0"
