@@ -1495,7 +1495,7 @@ fn load_key(path: &Path) -> Option<Secret> {
             return None;
         }
     }
-    match Secret::from_str(&buf) {
+    match Secret::copy_from_str(&buf) {
         Ok(key) => Some(key),
         Err(e) => {
             warn!("Error parsing key file: {:?}", e);

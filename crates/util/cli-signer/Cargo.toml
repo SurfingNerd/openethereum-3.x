@@ -7,7 +7,7 @@ version = "1.4.0"
 authors = ["Parity <admin@parity.io>"]
 
 [dependencies]
-ethereum-types = { version = "0.14.0", default-features = false }
+ethereum-types = { version = "0.14.0", features = [ "rlp" ] }
 futures = "0.1"
 rpassword = "1.0"
 parity-rpc = { path = "../../rpc" }

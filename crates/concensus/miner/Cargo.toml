@@ -21,12 +21,12 @@ ethabi = "16.0.0"
 ethabi-derive = "16.0.0"
 ethabi-contract = "16.0.0"
 ethcore-call-contract = { path = "../../vm/call-contract" }
-ethereum-types = { version = "0.14.0", default-features = false }
+ethereum-types = { version = "0.14.0", features = [ "rlp" ] }
 futures = "0.1"
 keccak-hash = "0.5.0"
 linked-hash-map = "0.5"
 log = "0.4"
-parity-crypto = { version = "0.6.2", features = [ "publickey" ] }
+# parity-crypto = { version = "0.9.0", features = [ "publickey" ] }
 parity-runtime = { path = "../../runtime/runtime" }
 parity-util-mem = "0.7"
 parking_lot = "0.11.1"

@@ -11,7 +11,7 @@ authors = [
 bincode = "1.1.2"
 clap = "2"
 ethcore = { path = "../../../.." }
-ethereum-types = { version = "0.14.0", default-features = false }
+ethereum-types = { version = "0.14.0", features = [ "rlp" ] }
 ethkey = { path = "../../../../../accounts/ethkey" }
 ethstore = { path = "../../../../../accounts/ethstore"}
 hbbft = { git = "https://github.com/poanetwork/hbbft", rev = "4857b7f9c7a0f513caca97c308d352c6a77fe5c2" }

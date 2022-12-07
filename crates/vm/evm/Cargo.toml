@@ -7,7 +7,7 @@ authors = ["Parity Technologies <admin@parity.io>"]
 [dependencies]
 bit-set = "0.4"
 parity-bytes = "0.1"
-ethereum-types = { version = "0.14.0", default-features = false }
+ethereum-types = { version = "0.14.0", features = [ "rlp" ] }
 lazy_static = "1.0"
 log = "0.4"
 vm = { path = "../vm" }

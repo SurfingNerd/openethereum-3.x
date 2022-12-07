@@ -343,6 +343,7 @@ const NULL_IV: [u8; 16] = [0; 16];
 impl EncryptedConnection {
     /// Create an encrypted connection out of the handshake.
     pub fn new(handshake: &mut Handshake) -> Result<EncryptedConnection, Error> {
+        
         let shared = parity_crypto::publickey::ecdh::agree(
             handshake.ecdhe.secret(),
             &handshake.remote_ephemeral,

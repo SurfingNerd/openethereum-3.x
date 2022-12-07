@@ -10,11 +10,11 @@ authors = ["Parity Technologies <admin@parity.io>"]
 error-chain = { version = "0.12", default-features = false }
 parity-crypto = { version = "0.6.2", features = [ "publickey"] }
 ethcore-io = { path = "../../runtime/io" }
-ethereum-types = { version = "0.14.0", default-features = false }
+ethereum-types = { version = "0.14.0", features = [ "rlp" ] }
 ethkey = { path = "../../../crates/accounts/ethkey" }
 ipnetwork = "0.12.6"
 lazy_static = "1.0"
- rlp = { version = "0.5.2" }
+rlp = { version = "0.5.2" }
 libc = "0.2"
 parity-snappy = "0.1"
 semver = {version="0.9.0", features=["serde"]}

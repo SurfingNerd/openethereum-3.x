@@ -27,7 +27,7 @@ ethcore-call-contract = { path = "../vm/call-contract" }
 ethcore-db = { path = "../db/db" }
 ethcore-io = { path = "../runtime/io" }
 ethcore-miner = { path = "../concensus/miner" }
-ethereum-types = { version = "0.14.0", default-features = false }
+ethereum-types = { version = "0.14.0", features = [ "rlp" ] }
 ethjson = { path = "../ethjson" }
 ethkey = { path = "../accounts/ethkey" }
 evm = { path = "../vm/evm" }
@@ -53,7 +53,7 @@ memory-cache = { path = "../util/memory-cache" }
 memory-db = { path = "../db/memory-db" }
 num_cpus = "1.2"
 parity-bytes = "0.1"
-parity-crypto = { version = "0.6.2", features = [ "publickey" ] }
+# parity-crypto = { version = "0.9.0", features = [ "publickey" ] }
 parity-snappy = "0.1"
 parity-util-mem = "0.7"
 parking_lot = "0.11.1"

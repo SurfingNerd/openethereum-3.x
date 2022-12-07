@@ -38,7 +38,7 @@ enum HandshakeState {
     /// Waiting for ack packet
     ReadingAck,
     /// Waiting for extended ack packet
-    ReadingAckEip8,
+    // ReadingAckEip8,
     /// Ready to start a session
     StartSession,
 }
@@ -152,9 +152,9 @@ impl Handshake {
                 HandshakeState::ReadingAck => {
                     self.read_ack(host.secret(), &data)?;
                 }
-                HandshakeState::ReadingAckEip8 => {
-                    self.read_ack_eip8(host.secret(), &data)?;
-                }
+                // HandshakeState::ReadingAckEip8 => {
+                //     self.read_ack_eip8(host.secret(), &data)?;
+                // }
             }
             if self.state == HandshakeState::StartSession {
                 io.clear_timer(self.connection.token).ok();
@@ -266,38 +266,47 @@ impl Handshake {
             return Err(ErrorKind::BadProtocol.into());
         }
         self.ack_cipher = data.to_vec();
-        match ecies::decrypt(secret, &[], data) {
+        match ecies::decrypt(secret, data) {
             Ok(ack) => {
                 self.remote_ephemeral = Public::from_slice(&ack[0..64]);
                 self.remote_nonce = H256::from_slice(&ack[64..(64 + 32)]);
                 self.state = HandshakeState::StartSession;
             }
             Err(_) => {
+
                 // Try to interpret as EIP-8 packet
                 let total = (((u16::from(data[0])) << 8 | (u16::from(data[1]))) as usize) + 2;
                 if total < V4_ACK_PACKET_SIZE {
                     debug!(target: "network", "Wrong EIP8 ack packet size");
                     return Err(ErrorKind::BadProtocol.into());
                 }
-                let rest = total - data.len();
-                self.state = HandshakeState::ReadingAckEip8;
-                self.connection.expect(rest);
+
+                warn!(target: "network", "EIP8 ack packet feature got removed.");
+                // let rest = total - data.len();
+                // self.state = HandshakeState::ReadingAckEip8;
+                // self.connection.expect(rest);
             }
         }
         Ok(())
     }
 
-    fn read_ack_eip8(&mut self, secret: &Secret, data: &[u8]) -> Result<(), Error> {
-        trace!(target: "network", "Received EIP8 handshake auth from {:?}", self.connection.remote_addr_str());
-        self.ack_cipher.extend_from_slice(data);
-        let ack = ecies::decrypt(secret, &self.ack_cipher[0..2], &self.ack_cipher[2..])?;
-        let rlp = Rlp::new(&ack);
-        self.remote_ephemeral = rlp.val_at(0)?;
-        self.remote_nonce = rlp.val_at(1)?;
-        self.remote_version = rlp.val_at(2)?;
-        self.state = HandshakeState::StartSession;
-        Ok(())
-    }
+    // fn read_ack_eip8(&mut self, secret: &Secret, data: &[u8]) -> Result<(), Error> {
+    //     trace!(target: "network", "Received EIP8 handshake auth from {:?}", self.connection.remote_addr_str());
+    //     self.ack_cipher.extend_from_slice(data);
+    //     // TODO: last parameter of ecies is not supported. , &self.ack_cipher[2..]
+    //     // we do not be backward compatible.
+    //     // let ack = ecies::decrypt(secret, &self.ack_cipher[0..2], &self.ack_cipher[2..])?;
+    //     warn!(target: "network", "read_ack_eip8 called. Unsure situation of backward compatibility.");
+        
+    //     let cipher = self.ack_cipher[0..2];
+    //     let ack = ecies::decrypt(secret, &cipher)?;
+    //     let rlp = Rlp::new(&ack);
+    //     self.remote_ephemeral = rlp.val_at(0)?;
+    //     self.remote_nonce = rlp.val_at(1)?;
+    //     self.remote_version = rlp.val_at(2)?;
+    //     self.state = HandshakeState::StartSession;
+    //     Ok(())
+    // }
 
     /// Sends auth message
     fn write_auth<Message>(

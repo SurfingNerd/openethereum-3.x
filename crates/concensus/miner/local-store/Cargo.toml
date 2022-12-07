@@ -10,7 +10,7 @@ ethcore-io = { path = "../../../runtime/io" }
 ethcore-db = { path = "../../../db/db"}
 kvdb = "0.1"
 log = "0.4"
-parity-crypto = { version = "0.6.2", features = [ "publickey" ] }
+# parity-crypto = { version = "0.9.0", features = [ "publickey" ] }
  rlp = { version = "0.5.2" }
 serde = "1.0"
 serde_derive = "1.0"

@@ -102,7 +102,7 @@ fn kdf(secret: &Secret, s1: &[u8], dest: &mut [u8]) {
 		hasher.update(secret.as_bytes());
 		hasher.update(s1);
 		let d = hasher.finish();
-		&mut dest[written..(written + 32)].copy_from_slice(&d);
+		let _ = &mut dest[written..(written + 32)].copy_from_slice(&d);
 		written += 32;
 		ctr += 1;
 	}

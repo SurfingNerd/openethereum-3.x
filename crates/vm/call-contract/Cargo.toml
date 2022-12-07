@@ -8,5 +8,5 @@ edition = "2018"
 
 [dependencies]
 types = { path = "../../ethcore/types", package = "common-types" }
-ethereum-types = { version = "0.14.0", default-features = false }
+ethereum-types = { version = "0.14.0", features = [ "rlp" ] }
 bytes = { version = "0.1", package = "parity-bytes" }

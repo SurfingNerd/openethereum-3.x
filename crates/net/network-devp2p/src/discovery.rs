@@ -600,7 +600,7 @@ impl<'a> Discovery<'a> {
 
         response.append(&echo_hash);
         append_expiration(&mut response);
-        self.send_packet(PACKET_PONG, from, &response.drain())?;
+        self.send_packet(PACKET_PONG, from, &response.out().to_vec())?;
 
         let entry = NodeEntry {
             id: *node_id,
@@ -778,7 +778,8 @@ impl<'a> Discovery<'a> {
             append_expiration(&mut rlp);
             rlp.out()
         });
-        packets.collect()
+        let c = packets.collect();
+        
     }
 
     fn on_neighbours(

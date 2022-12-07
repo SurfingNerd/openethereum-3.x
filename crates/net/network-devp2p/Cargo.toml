@@ -21,11 +21,12 @@ ansi_term = "0.10"
 rustc-hex = "1.0"
 ethcore-io = { path = "../../runtime/io", features = ["mio"] }
 parity-bytes = "0.1"
-parity-crypto = { version = "0.6.2", features = [ "publickey" ] }
+parity-crypto = { path = "../parity-crypto", features = [ "publickey"] }
 ethcore-network = { path = "../network" }
-ethereum-types = { version = "0.14.0", default-features = false }
+ethereum-types = { version = "0.14.0", features = [ "rlp" ] }
+ecies = { version = "0.2.3" }
 ethkey = { path = "../../../crates/accounts/ethkey" }
- rlp = { version = "0.5.2" }
+rlp = { version = "0.5.2" }
 parity-path = "0.1"
 ipnetwork = "0.12.6"
 keccak-hash = "0.5.0"
