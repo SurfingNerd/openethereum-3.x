@@ -1518,8 +1518,7 @@ fn key_save_load() {
 #[test]
 fn host_client_url() {
     let mut config = NetworkConfiguration::new_local();
-    let key = "6f7b0d801bc7b5ce7bbd930b84fd0369b3eb25d09be58d64ba811091046f3aa2"
-        .parse()
+    let key = Secret::copy_from_str("6f7b0d801bc7b5ce7bbd930b84fd0369b3eb25d09be58d64ba811091046f3aa2")
         .unwrap();
     config.use_secret = Some(key);
     let host: Host = Host::new(config, None).unwrap();

@@ -1277,7 +1277,7 @@ mod tests {
             .collect::<Vec<_>>();
 
         let secret_hex = "6c71d1b8930d29e6371be1081f2c909c64b46440a1716314c3c9df995cb3aed1";
-        let key = Secret::from_str(secret_hex)
+        let key = Secret::copy_from_str(secret_hex)
             .and_then(|secret| KeyPair::from_secret(secret))
             .unwrap();
         let mut discovery = Discovery::new(&key, ep.clone(), IpFilter::default());
@@ -1464,7 +1464,7 @@ mod tests {
         incorrect_pong_rlp.append(&H256::default());
         append_expiration(&mut incorrect_pong_rlp);
         let incorrect_pong_data =
-            assemble_packet(PACKET_PONG, &incorrect_pong_rlp.drain(), &discovery2.secret).unwrap();
+            assemble_packet(PACKET_PONG, &incorrect_pong_rlp.out().to_vec(), &discovery2.secret).unwrap();
         if let Some(_) = discovery1
             .on_packet(&incorrect_pong_data, ep2.address.clone())
             .unwrap()
@@ -1498,7 +1498,7 @@ mod tests {
         unexpected_pong_rlp.append(&H256::default());
         append_expiration(&mut unexpected_pong_rlp);
         let unexpected_pong =
-            assemble_packet(PACKET_PONG, &unexpected_pong_rlp.drain(), key3.secret()).unwrap();
+            assemble_packet(PACKET_PONG, &unexpected_pong_rlp.out().to_vec(), key3.secret()).unwrap();
         if let Some(_) = discovery1
             .on_packet(&unexpected_pong, ep3.address.clone())
             .unwrap()
