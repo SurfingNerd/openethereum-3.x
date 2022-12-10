@@ -16,7 +16,7 @@ rustc-hex = "1.0"
 time = "0.1.34"
 itertools = "0.5"
 parking_lot = "0.11.1"
-parity-crypto = { path = "../../parity-crypto" }
+parity-crypto = { path = "../../parity-crypto", features=["publickey"] }
 ethereum-types = { version = "0.14.0", features = [ "rlp" ] }
 smallvec = "0.6"
 parity-wordlist = "1.3"
