@@ -8,14 +8,12 @@ authors = ["Dragan Rakita <dragan0rakita@gmail.com","Karim Agha <karim.agha@gnos
 edition = "2018"
 description = "Generic transaction pool."
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-[dependencies.log]
-version = "0.4"
 
-[dependencies.smallvec]
-version = "0.6"
+[dependencies]
+log = "0.4"
+smallvec = "0.6"
+trace-time = "0.1"
 
-[dependencies.trace-time]
-version = "0.1"
-[dev-dependencies.ethereum-types]
-version = "0.7"
+
+[dev-dependencies]
+ethereum-types = { version = "0.14.0", features = ["rlp"]}
