@@ -43,7 +43,7 @@ ethcore-sync = { path = "../ethcore/sync" }
 ethcore-call-contract = { path = "../vm/call-contract" }
 ethereum-types = { version = "0.14.0", features = [ "rlp" ] }
 parity-bytes = "0.1"
-# parity-crypto = { version = "0.9.0", features = [ "publickey" ] }
+parity-crypto = { path="../parity-crypto", features = ["publickey"] }
 
 eip-712 = { path = "../util/EIP-712" }
 ethjson = { path = "../ethjson" }

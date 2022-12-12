@@ -13,7 +13,7 @@ ethkey = { path = "../../accounts/ethkey" }
 ethereum-types = { version = "0.14.0", features = [ "rlp" ] }
 keccak-hash = "0.10.0"
 parity-bytes = "0.1"
-# parity-crypto = { version = "0.9.0", features = [ "publickey" ] }
+parity-crypto = { path="../../parity-crypto", features = ["publickey"] }
 parity-util-mem = "0.7"
 rlp = { version = "0.5.2" }
 rlp_derive = { path = "../../util/rlp-derive" }

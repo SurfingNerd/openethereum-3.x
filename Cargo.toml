@@ -53,7 +53,7 @@ ethkey = { path = "crates/accounts/ethkey" }
 ethstore = { path = "crates/accounts/ethstore" }
 fetch = { path = "crates/net/fetch" }
 node-filter = { path = "crates/net/node-filter" }
-# parity-crypto = { path = "crates/parity-crypto" , features = [ "publickey" ] }
+parity-crypto = { path = "crates/parity-crypto", features = [ "publickey" ] }
 rlp = { version = "0.5.2" }
 cli-signer= { path = "crates/util/cli-signer" }
 parity-daemonize = "0.3"

@@ -16,7 +16,7 @@ ethkey = { path = "../../../../../accounts/ethkey" }
 ethstore = { path = "../../../../../accounts/ethstore"}
 hbbft = { git = "https://github.com/poanetwork/hbbft", rev = "4857b7f9c7a0f513caca97c308d352c6a77fe5c2" }
 hbbft_testing = { git = "https://github.com/poanetwork/hbbft" }
-parity-crypto = { version = "0.6.2", features = ["publickey"] }
+parity-crypto = { path="../../../../../parity-crypto", features = ["publickey"] }
 rand = "0.6.5"
 rustc-hex = "2.1.0"
 serde = { version = "1.0", features = ["derive"] }
