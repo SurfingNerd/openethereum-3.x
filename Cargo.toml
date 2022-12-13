@@ -48,7 +48,7 @@ ethcore-miner = { path = "crates/concensus/miner" }
 ethcore-network = { path = "crates/net/network" }
 ethcore-service = { path = "crates/ethcore/service" }
 ethcore-sync = { path = "crates/ethcore/sync" }
-ethereum-types = { version = "0.14.0", features = [ "rlp" ] }
+ethereum-types = { version = "0.14.1", features = [ "rlp" ] }
 ethkey = { path = "crates/accounts/ethkey" }
 ethstore = { path = "crates/accounts/ethstore" }
 fetch = { path = "crates/net/fetch" }

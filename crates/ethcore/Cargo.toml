@@ -27,7 +27,7 @@ ethcore-call-contract = { path = "../vm/call-contract" }
 ethcore-db = { path = "../db/db" }
 ethcore-io = { path = "../runtime/io" }
 ethcore-miner = { path = "../concensus/miner" }
-ethereum-types = { version = "0.14.0", features = [ "rlp" ] }
+ethereum-types = { version = "0.14.1", features = [ "rlp" ] }
 ethjson = { path = "../ethjson" }
 ethkey = { path = "../accounts/ethkey" }
 evm = { path = "../vm/evm" }

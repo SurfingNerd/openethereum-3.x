@@ -21,7 +21,7 @@ ethabi = "16.0.0"
 ethabi-derive = "16.0.0"
 ethabi-contract = "16.0.0"
 ethcore-call-contract = { path = "../../vm/call-contract" }
-ethereum-types = { version = "0.14.0", features = [ "rlp" ] }
+ethereum-types = { version = "0.14.1", features = [ "rlp" ] }
 futures = "0.1"
 keccak-hash = "0.10.0"
 linked-hash-map = "0.5"

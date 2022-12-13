@@ -5,7 +5,7 @@ authors = ["Parity Technologies <admin@parity.io>"]
 license = "GPL3"
 
 [dependencies]
-ethereum-types = { version = "0.14.0", features = [ "rlp" ] }
+ethereum-types = { version = "0.14.1", features = [ "rlp" ] }
 journaldb = { path = "../../db/journaldb" }
 app_dirs = { git = "https://github.com/openethereum/app-dirs-rs" }
 home = "0.3"

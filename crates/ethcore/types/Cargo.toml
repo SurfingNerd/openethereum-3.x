@@ -10,7 +10,7 @@ authors = [
 
 [dependencies]
 ethkey = { path = "../../accounts/ethkey" }
-ethereum-types = { version = "0.14.0", features = [ "rlp" ] }
+ethereum-types = { version = "0.14.1", features = [ "rlp" ] }
 keccak-hash = "0.10.0"
 parity-bytes = "0.1"
 parity-crypto = { path="../../parity-crypto", features = ["publickey"] }

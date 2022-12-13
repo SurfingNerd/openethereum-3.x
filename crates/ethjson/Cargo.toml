@@ -11,7 +11,7 @@ authors = [
 [dependencies]
 common-types = { path = "../ethcore/types", features = ["test-helpers"] }
 parity-crypto = { path="../parity-crypto", features = ["publickey"] }
-ethereum-types = { version = "0.14.0", features = [ "rlp" ] }
+ethereum-types = { version = "0.14.1", features = [ "rlp" ] }
 rustc-hex = "1.0"
 serde = "1.0"
 serde_json = "1.0"
