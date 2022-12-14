@@ -22,7 +22,7 @@ use std::fmt;
 use vm::Error as VmError;
 
 /// Trace evm errors.
-#[derive(Debug, PartialEq, Clone, MallocSizeOf)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum Error {
     /// `OutOfGas` is returned when transaction execution runs out of gas.
     OutOfGas,

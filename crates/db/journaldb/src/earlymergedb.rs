@@ -37,7 +37,7 @@ use rlp::{decode, encode};
 use util::{DatabaseKey, DatabaseValueRef, DatabaseValueView};
 use DB_PREFIX_LEN;
 
-#[derive(Debug, Clone, PartialEq, Eq, MallocSizeOf)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 struct RefInfo {
     queue_refs: usize,
     in_archive: bool,

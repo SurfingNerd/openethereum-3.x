@@ -31,7 +31,7 @@ use types::{
 
 malloc_size_of_is_0!(HeaderId);
 
-#[derive(PartialEq, Debug, Clone, MallocSizeOf)]
+#[derive(PartialEq, Debug, Clone)]
 pub struct SyncHeader {
     pub bytes: Bytes,
     pub header: BlockHeader,

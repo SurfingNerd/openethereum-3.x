@@ -31,7 +31,7 @@ use error::Error as EthcoreError;
 use machine::{AuxiliaryData, Call, EthereumMachine};
 
 /// Set used for testing with a single validator.
-#[derive(Clone, MallocSizeOf)]
+#[derive(Clone)]
 pub struct TestSet {
     validator: SimpleList,
     last_malicious: Arc<AtomicUsize>,

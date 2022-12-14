@@ -16,13 +16,13 @@
 
 //! Block header.
 
+
 use crate::{
     bytes::Bytes,
     hash::{keccak, KECCAK_EMPTY_LIST_RLP, KECCAK_NULL_RLP},
     BlockNumber,
 };
 use ethereum_types::{Address, Bloom, H256, U256};
-use parity_util_mem::MallocSizeOf;
 use rlp::{DecoderError, Encodable, Rlp, RlpStream};
 
 /// Semantic boolean for when a seal/signature is included.
@@ -54,7 +54,7 @@ pub struct ExtendedHeader {
 ///
 /// Two versions of header exist. First one is before EIP1559. Second version is after EIP1559.
 /// EIP1559 version added field base_fee_per_gas.
-#[derive(Debug, Clone, Eq, MallocSizeOf)]
+#[derive(Debug, Clone, Eq)]
 pub struct Header {
     /// Parent hash.
     parent_hash: H256,
@@ -334,7 +334,7 @@ impl Header {
     fn rlp(&self, with_seal: Seal) -> Bytes {
         let mut s = RlpStream::new();
         self.stream_rlp(&mut s, with_seal);
-        s.out()
+        s.out().to_vec()
     }
 
     /// Place this header into an RLP stream `s`, optionally `with_seal`.

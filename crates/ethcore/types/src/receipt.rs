@@ -18,7 +18,6 @@
 
 use super::transaction::TypedTxId;
 use ethereum_types::{Address, Bloom, H160, H256, U256};
-use parity_util_mem::MallocSizeOf;
 use rlp::{DecoderError, Rlp, RlpStream};
 use std::ops::{Deref, DerefMut};
 
@@ -28,7 +27,7 @@ use crate::{
 };
 
 /// Transaction outcome store in the receipt.
-#[derive(Debug, Clone, PartialEq, Eq, MallocSizeOf)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum TransactionOutcome {
     /// Status and state root are unknown under EIP-98 rules.
     Unknown,
@@ -39,7 +38,7 @@ pub enum TransactionOutcome {
 }
 
 /// Information describing execution of a transaction.
-#[derive(Debug, Clone, PartialEq, Eq, MallocSizeOf)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LegacyReceipt {
     /// The total gas used in the block following execution of the transaction.
     pub gas_used: U256,
@@ -108,7 +107,7 @@ impl LegacyReceipt {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, MallocSizeOf)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum TypedReceipt {
     Legacy(LegacyReceipt),
     AccessList(LegacyReceipt),

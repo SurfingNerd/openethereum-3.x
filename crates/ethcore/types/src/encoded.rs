@@ -33,11 +33,10 @@ use crate::{
 };
 
 use ethereum_types::{Address, Bloom, H256, U256};
-use parity_util_mem::MallocSizeOf;
 use rlp::{self, Rlp, RlpStream};
 
 /// Owning header view.
-#[derive(Debug, Clone, PartialEq, Eq, MallocSizeOf)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Header(Vec<u8>);
 
 impl Header {
@@ -155,7 +154,7 @@ impl Header {
 }
 
 /// Owning block body view.
-#[derive(Debug, Clone, PartialEq, Eq, MallocSizeOf)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Body(Vec<u8>);
 
 impl Body {
@@ -248,7 +247,7 @@ impl Body {
 }
 
 /// Owning block view.
-#[derive(Debug, Clone, PartialEq, Eq, MallocSizeOf)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Block(Vec<u8>);
 
 impl Block {

@@ -133,7 +133,7 @@ struct JournalOverlay {
     cumulative_size: usize, // cumulative size of all entries.
 }
 
-#[derive(PartialEq, MallocSizeOf)]
+#[derive(PartialEq)]
 struct JournalEntry {
     id: H256,
     insertions: Vec<H256>,

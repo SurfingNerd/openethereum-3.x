@@ -11,6 +11,8 @@ authors = [
 [dependencies]
 ethkey = { path = "../../accounts/ethkey" }
 ethereum-types = { version = "0.14.1", features = [ "rlp" ] }
+primitive-types = { version = "0.12.1", features = [ "std", "scale-info" ]}
+scale-info = { version = "2.3.1", features = ["std", "derive"] }
 keccak-hash = "0.10.0"
 parity-bytes = "0.1"
 parity-crypto = { path="../../parity-crypto", features = ["publickey"] }

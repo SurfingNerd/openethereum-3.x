@@ -24,7 +24,7 @@ use rlp::{Decodable, DecoderError, Encodable, Rlp, RlpStream};
 /// Trace localized in vector of traces produced by a single transaction.
 ///
 /// Parent and children indexes refer to positions in this vector.
-#[derive(Debug, PartialEq, Clone, MallocSizeOf)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct FlatTrace {
     #[ignore_malloc_size_of = "ignored for performance reason"]
     /// Type of action performed by a transaction.
@@ -72,7 +72,7 @@ impl Decodable for FlatTrace {
 }
 
 /// Represents all traces produced by a single transaction.
-#[derive(Debug, PartialEq, Clone, RlpEncodableWrapper, RlpDecodableWrapper, MallocSizeOf)]
+#[derive(Debug, PartialEq, Clone, RlpEncodableWrapper, RlpDecodableWrapper)]
 pub struct FlatTransactionTraces(Vec<FlatTrace>);
 
 impl From<Vec<FlatTrace>> for FlatTransactionTraces {

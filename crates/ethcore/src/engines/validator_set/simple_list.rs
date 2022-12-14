@@ -25,7 +25,7 @@ use machine::{AuxiliaryData, Call, EthereumMachine};
 use types::{header::Header, BlockNumber};
 
 /// Validator set containing a known set of addresses.
-#[derive(Clone, Debug, PartialEq, Eq, Default, MallocSizeOf)]
+#[derive(Clone, Debug, PartialEq, Eq, Default)]
 pub struct SimpleList {
     validators: Vec<Address>,
 }
