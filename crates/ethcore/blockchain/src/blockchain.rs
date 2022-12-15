@@ -52,7 +52,7 @@ use ethereum_types::{Bloom, BloomRef, H256, U256};
 use itertools::Itertools;
 use log::{info, trace, warn};
 use parity_bytes::Bytes;
-use parity_util_mem::{allocators::new_malloc_size_ops, MallocSizeOf};
+use parity_util_mem::{allocators::new_malloc_size_ops};
 use parking_lot::{Mutex, RwLock};
 use rayon::prelude::*;
 use rlp::RlpStream;
@@ -1913,7 +1913,7 @@ impl BlockChain {
         let block_view = view!(BlockView, block);
         body.append_raw(block_view.transactions_rlp().as_raw(), 1);
         body.append_raw(block_view.uncles_rlp().as_raw(), 1);
-        body.out()
+        body.out().to_vec()
     }
 
     /// Returns general blockchain information
