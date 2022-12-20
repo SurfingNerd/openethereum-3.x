@@ -19,7 +19,6 @@ use bit_set::BitSet;
 use ethereum_types::H256;
 use hash::KECCAK_EMPTY;
 use memory_cache::MemoryLruCache;
-use parity_util_mem::{MallocSizeOf, MallocSizeOfOps};
 use parking_lot::Mutex;
 use std::sync::Arc;
 
@@ -28,14 +27,8 @@ const DEFAULT_CACHE_SIZE: usize = 4 * 1024 * 1024;
 #[derive(Clone)]
 struct Bits(Arc<BitSet>);
 
-impl MallocSizeOf for Bits {
-    fn size_of(&self, _ops: &mut MallocSizeOfOps) -> usize {
-        // dealing in bits here
-        self.0.capacity() * 8
-    }
-}
 
-#[derive(MallocSizeOf, Clone)]
+#[derive(Clone)]
 struct CacheItem {
     jump_destination: Bits,
     sub_entrypoint: Bits,

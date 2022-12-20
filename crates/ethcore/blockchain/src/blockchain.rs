@@ -18,7 +18,7 @@
 
 use std::{
     collections::{HashMap, HashSet},
-    io, mem,
+    io, mem::{self, size_of_val},
     path::Path,
     sync::Arc,
 };
@@ -1844,13 +1844,13 @@ impl BlockChain {
 
     /// Get current cache size.
     pub fn cache_size(&self) -> CacheSize {
-        let mut ops = new_malloc_size_ops();
+        
         CacheSize {
-            blocks: self.block_headers.read().size_of(&mut ops)
-                + self.block_bodies.read().size_of(&mut ops),
-            block_details: self.block_details.read().size_of(&mut ops),
-            transaction_addresses: self.transaction_addresses.read().size_of(&mut ops),
-            block_receipts: self.block_receipts.read().size_of(&mut ops),
+            blocks: size_of_val(&self.block_headers.read())
+                + size_of_val(&self.block_bodies.read()),
+            block_details: size_of_val(&self.block_details.read()),
+            transaction_addresses: size_of_val(&self.transaction_addresses.read()),
+            block_receipts: size_of_val(&self.block_receipts.read()),
         }
     }
 
@@ -1897,13 +1897,23 @@ impl BlockChain {
             transaction_addresses.shrink_to_fit();
             block_receipts.shrink_to_fit();
 
-            let mut ops = new_malloc_size_ops();
-            block_headers.size_of(&mut ops)
-                + block_bodies.size_of(&mut ops)
-                + block_details.size_of(&mut ops)
-                + block_hashes.size_of(&mut ops)
-                + transaction_addresses.size_of(&mut ops)
-                + block_receipts.size_of(&mut ops)
+
+
+            warn!("Collecting garbage, headers: {}, bodies: {}, details: {}, hashes: {}, addresses: {}, receipts: {}",
+                std::mem::size_of_val(&block_headers),
+                std::mem::size_of_val(&block_bodies),
+                std::mem::size_of_val(&block_details),
+                std::mem::size_of_val(&block_hashes),
+                std::mem::size_of_val(&transaction_addresses),
+                std::mem::size_of_val(&block_receipts)
+            );
+            
+            std::mem::size_of_val(&block_headers)
+                + std::mem::size_of_val(&block_bodies)
+                + std::mem::size_of_val(&block_details)
+                + std::mem::size_of_val(&block_hashes)
+                + std::mem::size_of_val(&transaction_addresses)
+                + std::mem::size_of_val(&block_receipts)
         });
     }
 

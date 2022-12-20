@@ -19,7 +19,7 @@
 use std::{
     collections::{BTreeMap, HashMap},
     io,
-    sync::Arc,
+    sync::Arc, mem::size_of_val,
 };
 
 use super::{traits::JournalDB, LATEST_ERA_KEY};
@@ -30,7 +30,6 @@ use hash_db::HashDB;
 use keccak_hasher::KeccakHasher;
 use memory_db::MemoryDB;
 use overlaydb::OverlayDB;
-use parity_util_mem::{allocators::new_malloc_size_ops, MallocSizeOf};
 use rlp::{decode, encode};
 use util::{DatabaseKey, DatabaseValueRef, DatabaseValueView};
 use DB_PREFIX_LEN;
@@ -123,14 +122,14 @@ impl JournalDB for RefCountedDB {
     }
 
     fn get_sizes(&self, sizes: &mut BTreeMap<String, usize>) {
-        let mut ops = new_malloc_size_ops();
+
         sizes.insert(
             String::from("db_ref_counted_inserts"),
-            self.inserts.size_of(&mut ops),
+            size_of_val(&self.inserts)
         );
         sizes.insert(
             String::from("db_ref_counted_removes"),
-            self.removes.size_of(&mut ops),
+            size_of_val(&self.removes)
         );
     }
 

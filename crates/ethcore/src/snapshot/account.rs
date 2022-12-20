@@ -150,7 +150,7 @@ pub fn to_fat_rlps(
                 None => {
                     account_stream.finalize_unbounded_list();
                     let stream = ::std::mem::replace(&mut account_stream, RlpStream::new_list(2));
-                    chunks.push(stream.out());
+                    chunks.push(stream.out().to_vec());
                     return Ok(chunks);
                 }
             }

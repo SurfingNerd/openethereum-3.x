@@ -16,9 +16,9 @@ crossbeam-channel = "0.5.2"
 eip-152 = { version = "0.1", path = "../util/EIP-152" }
 env_logger = { version = "0.5", optional = true }
 error-chain = { version = "0.12", default-features = false }
-ethabi = "12.0.0"
-ethabi-contract = "16.0.0"
-ethabi-derive = "16.0.0"
+ethabi = { git = "https://github.com/surfingnerd/ethabi", rev="beb208bf24df9c3d7639fa661e6a1ac87dee7886"  } 
+ethabi-derive = { git = "https://github.com/surfingnerd/ethabi", rev="beb208bf24df9c3d7639fa661e6a1ac87dee7886"  }
+ethabi-contract = { git = "https://github.com/surfingnerd/ethabi", rev="beb208bf24df9c3d7639fa661e6a1ac87dee7886"  }
 ethash = { path = "../concensus/ethash" }
 ethcore-blockchain = { path = "./blockchain" }
 ethcore-bloom-journal = { path = "../db/bloom" }

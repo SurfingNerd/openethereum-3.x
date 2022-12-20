@@ -165,7 +165,7 @@ impl<'a> PowWorker<'a> {
                 loaded_size = new_loaded_size;
             }
 
-            self.rlps.push_front(pair);
+            self.rlps.push_front(pair.to_vec());
 
             last = self.current_hash;
             self.current_hash = block.header_view().parent_hash();

@@ -580,7 +580,7 @@ impl Account {
         stream.append(&self.balance);
         stream.append(&self.storage_root);
         stream.append(&self.code_hash);
-        stream.out()
+        stream.out().to_vec()
     }
 
     /// Clone basic account data

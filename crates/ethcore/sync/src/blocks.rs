@@ -49,7 +49,7 @@ impl SyncHeader {
     }
 }
 
-#[derive(MallocSizeOf)]
+
 pub struct SyncBody {
     pub transactions_bytes: Bytes,
     pub transactions: Vec<UnverifiedTransaction>,
@@ -84,7 +84,6 @@ impl SyncBody {
 }
 
 /// Block data with optional body.
-#[derive(MallocSizeOf)]
 struct SyncBlock {
     header: SyncHeader,
     body: Option<SyncBody>,

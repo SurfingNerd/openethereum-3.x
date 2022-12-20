@@ -51,13 +51,13 @@ pub trait BlockLike {
 /// consistent.
 pub trait Kind: 'static + Sized + Send + Sync {
     /// The first stage: completely unverified.
-    type Input: Sized + Send + BlockLike + MallocSizeOf;
+    type Input: Sized + Send + BlockLike;
 
     /// The second stage: partially verified.
-    type Unverified: Sized + Send + BlockLike + MallocSizeOf;
+    type Unverified: Sized + Send + BlockLike;
 
     /// The third stage: completely verified.
-    type Verified: Sized + Send + BlockLike + MallocSizeOf;
+    type Verified: Sized + Send + BlockLike;
 
     /// Attempt to create the `Unverified` item from the input.
     fn create(

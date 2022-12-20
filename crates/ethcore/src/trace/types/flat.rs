@@ -26,10 +26,8 @@ use rlp::{Decodable, DecoderError, Encodable, Rlp, RlpStream};
 /// Parent and children indexes refer to positions in this vector.
 #[derive(Debug, PartialEq, Clone)]
 pub struct FlatTrace {
-    #[ignore_malloc_size_of = "ignored for performance reason"]
     /// Type of action performed by a transaction.
     pub action: Action,
-    #[ignore_malloc_size_of = "ignored for performance reason"]
     /// Result of this action.
     pub result: Res,
     /// Number of subtraces.
@@ -98,7 +96,7 @@ impl Into<Vec<FlatTrace>> for FlatTransactionTraces {
 
 /// Represents all traces produced by transactions in a single block.
 #[derive(
-    Debug, PartialEq, Clone, Default, RlpEncodableWrapper, RlpDecodableWrapper, MallocSizeOf,
+    Debug, PartialEq, Clone, Default, RlpEncodableWrapper, RlpDecodableWrapper,
 )]
 pub struct FlatBlockTraces(Vec<FlatTransactionTraces>);
 

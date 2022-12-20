@@ -21,6 +21,7 @@ use blockchain::BlockChainDB;
 use db::{self, cache_manager::CacheManager, CacheUpdatePolicy, Key, Readable, Writable};
 use ethereum_types::{H256, H264};
 use kvdb::DBTransaction;
+use lazy_static::__Deref;
 use parity_util_mem::MallocSizeOfExt;
 use parking_lot::RwLock;
 use types::BlockNumber;
@@ -104,7 +105,8 @@ where
     }
 
     fn cache_size(&self) -> usize {
-        self.traces.read().malloc_size_of()
+         let x = self.traces.read();
+         std::mem::size_of_val(x.deref())
     }
 
     /// Let the cache system know that a cacheable item has been used.
@@ -126,7 +128,7 @@ where
             }
             traces.shrink_to_fit();
 
-            traces.malloc_size_of()
+            std::mem::size_of_val(&traces)
         });
     }
 

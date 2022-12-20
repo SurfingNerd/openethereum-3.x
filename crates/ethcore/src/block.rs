@@ -514,7 +514,7 @@ impl SealedBlock {
         block_rlp.append(&self.block.header);
         SignedTransaction::rlp_append_list(&mut block_rlp, &self.block.transactions);
         block_rlp.append_list(&self.block.uncles);
-        block_rlp.out()
+        block_rlp.out().to_vec()
     }
 }
 

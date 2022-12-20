@@ -14,7 +14,7 @@ edition = "2018"
 serde_derive = "1.0"
 serde = "1.0"
 serde_json = "1.0"
-ethabi = "16.0.0"
+ethabi = { git = "https://github.com/surfingnerd/ethabi", rev="beb208bf24df9c3d7639fa661e6a1ac87dee7886"  } 
 keccak-hash = "0.10.0"
 ethereum-types = { version = "0.14.0", default-features = false, features = ["serialize"] }
 logos = "0.12.0"

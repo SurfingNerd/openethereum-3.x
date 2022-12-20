@@ -22,9 +22,8 @@ extern crate lru_cache;
 extern crate parity_util_mem;
 
 use lru_cache::LruCache;
-use parity_util_mem::{MallocSizeOf, MallocSizeOfExt};
 
-use std::hash::Hash;
+use std::{hash::Hash, mem};
 
 const INITIAL_CAPACITY: usize = 4;
 
@@ -36,11 +35,11 @@ pub struct MemoryLruCache<K: Eq + Hash, V> {
 }
 
 // amount of memory used when the item will be put on the heap.
-fn heap_size_of<T: MallocSizeOf>(val: &T) -> usize {
-    ::std::mem::size_of::<T>() + val.malloc_size_of()
+fn heap_size_of<T>(val: &T) -> usize {
+    mem::size_of_val(val)
 }
 
-impl<K: Eq + Hash, V: MallocSizeOf> MemoryLruCache<K, V> {
+impl<K: Eq + Hash, V> MemoryLruCache<K, V> {
     /// Create a new cache with a maximum size in bytes.
     pub fn new(max_size: usize) -> Self {
         MemoryLruCache {

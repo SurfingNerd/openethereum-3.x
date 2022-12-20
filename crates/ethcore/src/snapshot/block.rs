@@ -84,7 +84,7 @@ impl AbridgedBlock {
             stream.append(&header.base_fee());
         }
 
-        AbridgedBlock { rlp: stream.out() }
+        AbridgedBlock { rlp: stream.out().to_vec() }
     }
 
     /// Flesh out an abridged block view with the provided parent hash and block number.

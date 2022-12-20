@@ -13,9 +13,9 @@ ethcore-network-devp2p = { path = "../network-devp2p" }
 ethereum-types = { version = "0.14.1", features = [ "rlp" ] }
 log = "0.4"
 parking_lot = "0.11.1"
-ethabi = "12.0.0"
-ethabi-derive = "16.0.0"
-ethabi-contract = "16.0.0"
+ethabi = { git = "https://github.com/surfingnerd/ethabi", rev="beb208bf24df9c3d7639fa661e6a1ac87dee7886"  } 
+ethabi-derive = { git = "https://github.com/surfingnerd/ethabi", rev="beb208bf24df9c3d7639fa661e6a1ac87dee7886"  }
+ethabi-contract = { git = "https://github.com/surfingnerd/ethabi", rev="beb208bf24df9c3d7639fa661e6a1ac87dee7886"  }
 lru-cache = "0.1"
 
 [dev-dependencies]

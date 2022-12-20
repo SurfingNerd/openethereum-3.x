@@ -17,9 +17,9 @@ url = { version = "2", optional = true }
 ansi_term = "0.10"
 common-types = { path = "../../ethcore/types" }
 error-chain = "0.12"
-ethabi = "16.0.0"
-ethabi-derive = "16.0.0"
-ethabi-contract = "16.0.0"
+ethabi = { git = "https://github.com/surfingnerd/ethabi", rev="beb208bf24df9c3d7639fa661e6a1ac87dee7886"  } 
+ethabi-derive = { git = "https://github.com/surfingnerd/ethabi", rev="beb208bf24df9c3d7639fa661e6a1ac87dee7886"  }
+ethabi-contract = { git = "https://github.com/surfingnerd/ethabi", rev="beb208bf24df9c3d7639fa661e6a1ac87dee7886"  }
 ethcore-call-contract = { path = "../../vm/call-contract" }
 ethereum-types = { version = "0.14.1", features = [ "rlp" ] }
 futures = "0.1"

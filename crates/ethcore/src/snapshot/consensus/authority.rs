@@ -102,7 +102,7 @@ impl SnapshotComponents for PoaSnapshot {
                 new_loaded_size
             };
 
-            rlps.push(entry);
+            rlps.push(entry.to_vec());
         }
 
         let (block, receipts) = chain
@@ -124,7 +124,7 @@ impl SnapshotComponents for PoaSnapshot {
                 .append_list(&block.uncles)
                 .append(&receipts)
                 .append(&parent_td);
-            stream.out()
+            stream.out().to_vec()
         });
 
         write_chunk(true, &mut rlps, sink)?;
