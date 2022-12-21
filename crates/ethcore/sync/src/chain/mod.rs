@@ -612,7 +612,7 @@ impl ChainSync {
                             hash_rlp.append(&number);
                             rlp_stream.append_raw(hash_rlp.as_raw(), 1);
                         }
-                        Some(rlp_stream.out())
+                        Some(rlp_stream.out().to_vec())
                     }
                 }
             }
@@ -625,7 +625,7 @@ impl ChainSync {
         let mut rlp_stream = RlpStream::new_list(2);
         rlp_stream.append_raw(bytes, 1);
         rlp_stream.append(&total_difficulty);
-        rlp_stream.out()
+        rlp_stream.out().to_vec()
     }
 
     /// creates latest block rlp for the given client
@@ -1529,7 +1529,7 @@ impl ChainSync {
             packet.append(&block_number);
         }
         packet.finalize_unbounded_list();
-        io.respond(StatusPacket.id(), packet.out())
+        io.respond(StatusPacket.id(), packet.out().to_vec())
     }
 
     pub fn maintain_peers(&mut self, io: &mut dyn SyncIo) {

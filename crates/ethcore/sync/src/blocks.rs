@@ -578,7 +578,7 @@ impl BlockCollection {
         let block = SyncBlock {
             header: info,
             body,
-            receipts,
+            receipts: receipts.map(|r| r.to_vec()),
             receipts_root,
         };
 

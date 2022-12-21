@@ -2,10 +2,10 @@
 //! to support Ethereum network protocol, version 64 and above.
 
 // Re-export ethereum-forkid crate contents here.
-pub use ethereum_forkid::{BlockNumber, ForkId, RejectReason};
+pub use ethereum_forkid::{BlockNumber, ForkId };
 
 use ethcore::client::ChainInfo;
-use ethereum_forkid::ForkFilter;
+use ethereum_forkid::{ForkFilter, ValidationError};
 
 /// Wrapper around fork filter that provides integration with `ForkFilter`.
 pub struct ForkFilterApi {
@@ -53,9 +53,9 @@ impl ForkFilterApi {
         &mut self,
         client: &C,
         fork_id: ForkId,
-    ) -> Result<(), RejectReason> {
+    ) -> Result<(), ValidationError> {
         self.update_head(client);
-        self.inner.is_compatible(fork_id)
+        self.inner.validate(fork_id)
     }
 }
 

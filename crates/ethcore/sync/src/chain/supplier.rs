@@ -402,7 +402,7 @@ impl SyncSupplier {
                 if total_bytes > PAYLOAD_SOFT_LIMIT {
                     break;
                 }
-                data.append(&mut receipts_bytes);
+                data.append(&receipts_bytes.to_vec());
                 added_headers += 1;
             }
         }
@@ -468,7 +468,7 @@ impl SyncSupplier {
         let response = rlp_func(io, rlp, peer);
         if let Some((packet_id, rlp_stream)) = response? {
             let rlp_stream = prepend_request_id(rlp_stream, request_id);
-            io.respond(packet_id.id(), rlp_stream.out())
+            io.respond(packet_id.id(), rlp_stream.out().to_vec())
                 .unwrap_or_else(|e| debug!(target: "sync", "{:?}", error_func(e)));
         }
         Ok(())
@@ -491,7 +491,7 @@ impl SyncSupplier {
             Err(e) => Err(e),
             Ok(Some((packet_id, rlp_stream))) => {
                 let rlp_stream = prepend_request_id(rlp_stream, request_id);
-                io.send(peer, packet_id, rlp_stream.out())
+                io.send(peer, packet_id, rlp_stream.out().to_vec())
                     .unwrap_or_else(|e| debug!(target: "sync", "{:?}", error_func(e)));
                 Ok(())
             }

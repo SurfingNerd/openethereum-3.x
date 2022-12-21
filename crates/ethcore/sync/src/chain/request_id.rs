@@ -78,7 +78,7 @@ fn do_generate_request_id(packet: &Bytes) -> (Bytes, Option<RequestId>) {
     rlp.append(&request_id);
     rlp.append_raw(packet, 1);
 
-    (rlp.out(), Some(request_id))
+    (rlp.out().to_vec(), Some(request_id))
 }
 
 #[cfg(test)]

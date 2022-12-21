@@ -76,7 +76,7 @@ impl SyncRequester {
             peer_id,
             PeerAsking::BlockBodies,
             GetBlockBodiesPacket,
-            rlp.out(),
+            rlp.out().to_vec(),
         );
         let peer = sync.peers.get_mut(&peer_id).expect("peer_id may originate either from on_packet, where it is already validated or from enumerating self.peers. qed");
         peer.asking_blocks = hashes;
@@ -102,7 +102,7 @@ impl SyncRequester {
             peer_id,
             PeerAsking::ForkHeader,
             GetBlockHeadersPacket,
-            rlp.out(),
+            rlp.out().to_vec(),
         );
     }
 
@@ -125,7 +125,7 @@ impl SyncRequester {
             peer_id,
             PeerAsking::PooledTransactions,
             GetPooledTransactionsPacket,
-            rlp.out(),
+            rlp.out().to_vec(),
         )
     }
 
@@ -150,7 +150,7 @@ impl SyncRequester {
             peer_id,
             PeerAsking::SnapshotManifest,
             GetSnapshotManifestPacket,
-            rlp.out(),
+            rlp.out().to_vec(),
         );
     }
 
@@ -177,7 +177,7 @@ impl SyncRequester {
             peer_id,
             PeerAsking::BlockHeaders,
             GetBlockHeadersPacket,
-            rlp.out(),
+            rlp.out().to_vec(),
         );
         let peer = sync.peers.get_mut(&peer_id).expect("peer_id may originate either from on_packet, where it is already validated or from enumerating self.peers. qed");
         peer.asking_hash = Some(h.clone());
@@ -203,7 +203,7 @@ impl SyncRequester {
             peer_id,
             PeerAsking::BlockReceipts,
             GetReceiptsPacket,
-            rlp.out(),
+            rlp.out().to_vec(),
         );
         let peer = sync.peers.get_mut(&peer_id).expect("peer_id may originate either from on_packet, where it is already validated or from enumerating self.peers. qed");
         peer.asking_blocks = hashes;
@@ -226,7 +226,7 @@ impl SyncRequester {
             peer_id,
             PeerAsking::SnapshotData,
             GetSnapshotDataPacket,
-            rlp.out(),
+            rlp.out().to_vec(),
         );
     }
 
