@@ -30,7 +30,7 @@ use fastmap::H256FastMap;
 use hash_db::HashDB;
 use keccak_hasher::KeccakHasher;
 use memory_db::*;
-use parity_util_mem::MallocSizeOf;
+
 use parking_lot::RwLock;
 use rlp::{decode, encode, Decodable, DecoderError, Encodable, Rlp, RlpStream};
 use util::DatabaseKey;

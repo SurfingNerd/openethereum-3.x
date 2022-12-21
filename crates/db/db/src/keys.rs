@@ -23,7 +23,7 @@ use common_types::{
 };
 use ethereum_types::{H256, H264, U256};
 use kvdb::PREFIX_LEN as DB_PREFIX_LEN;
-use parity_util_mem::MallocSizeOf;
+
 use rlp;
 use rlp_derive::{RlpDecodable, RlpEncodable};
 

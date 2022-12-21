@@ -52,7 +52,6 @@ use ethereum_types::{Bloom, BloomRef, H256, U256};
 use itertools::Itertools;
 use log::{info, trace, warn};
 use parity_bytes::Bytes;
-use parity_util_mem::{allocators::new_malloc_size_ops};
 use parking_lot::{Mutex, RwLock};
 use rayon::prelude::*;
 use rlp::RlpStream;

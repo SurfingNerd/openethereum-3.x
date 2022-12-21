@@ -27,6 +27,7 @@ use std::sync::{
 };
 
 use engines::{EpochTransition, EpochVerifier, EthEngine};
+use lazy_static::__Deref;
 use machine::EthereumMachine;
 use snapshot::{Error, ManifestData, Progress};
 
@@ -167,7 +168,7 @@ fn write_chunk(last: bool, chunk_data: &mut Vec<Bytes>, sink: &mut ChunkSink) ->
         stream.append_raw(&item, 1);
     }
 
-    (sink)(stream.out().as_slice()).map_err(Into::into)
+    (sink)(stream.out().to_vec().deref()).map_err(Into::into)
 }
 
 // rebuilder checks state proofs for all transitions, and checks that each

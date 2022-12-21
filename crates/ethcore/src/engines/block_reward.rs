@@ -143,11 +143,11 @@ impl BlockRewardContract {
 
         let addresses = tokens[0]
             .clone()
-            .to_array()
+            .into_array()
             .expect("type checked by ethabi::decode; qed");
         let rewards = tokens[1]
             .clone()
-            .to_array()
+            .into_array()
             .expect("type checked by ethabi::decode; qed");
 
         if addresses.len() != rewards.len() {
@@ -160,10 +160,10 @@ impl BlockRewardContract {
 
         let addresses = addresses
             .into_iter()
-            .map(|t| t.to_address().expect("type checked by ethabi::decode; qed"));
+            .map(|t| t.into_address().expect("type checked by ethabi::decode; qed"));
         let rewards = rewards
             .into_iter()
-            .map(|t| t.to_uint().expect("type checked by ethabi::decode; qed"));
+            .map(|t| t.into_uint().expect("type checked by ethabi::decode; qed"));
 
         Ok(addresses.zip(rewards).collect())
     }

@@ -1144,7 +1144,7 @@ impl Engine<EthereumMachine> for HoneyBadgerBFT {
             return Seal::None;
         }
         trace!(target: "consensus", "Returning generated seal for block {}.", block_num);
-        Seal::Regular(vec![rlp::encode(&RlpSig(sig))])
+        Seal::Regular(vec!(rlp::encode(&RlpSig(sig)).to_vec()))
     }
 
     fn should_miner_prepare_blocks(&self) -> bool {

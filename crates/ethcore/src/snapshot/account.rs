@@ -132,13 +132,13 @@ pub fn to_fat_rlps(
                     let pair = {
                         let mut stream = RlpStream::new_list(2);
                         stream.append(&k).append(&&*v);
-                        stream.drain()
+                        stream.out().to_vec()
                     };
                     if !account_stream.append_raw_checked(&pair, 1, target_chunk_size) {
                         account_stream.finalize_unbounded_list();
                         let stream =
                             ::std::mem::replace(&mut account_stream, RlpStream::new_list(2));
-                        chunks.push(stream.out());
+                        chunks.push(stream.out().to_vec());
                         target_chunk_size = max_chunk_size;
                         leftover = Some(pair);
                         break;

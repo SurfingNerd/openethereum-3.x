@@ -593,7 +593,7 @@ fn rebuild_accounts(
             ::rlp::encode(&acc)
         };
 
-        *out = (hash, thin_rlp);
+        *out = (hash, thin_rlp.to_vec());
     }
     if let Some(&(ref hash, ref rlp)) = out_chunk.iter().last() {
         known_storage_roots.insert(*hash, ::rlp::decode::<BasicAccount>(rlp)?.storage_root);

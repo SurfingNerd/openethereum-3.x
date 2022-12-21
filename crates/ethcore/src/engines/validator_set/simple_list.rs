@@ -16,7 +16,7 @@
 
 use ethereum_types::{Address, H256};
 /// Preconfigured validator list.
-use parity_util_mem::MallocSizeOf;
+
 
 use super::{SystemCall, ValidatorSet};
 use bytes::Bytes;
@@ -37,11 +37,11 @@ impl SimpleList {
             validators: validators,
         }
     }
-
-    /// Convert into inner representation.
-    pub fn into_inner(self) -> Vec<Address> {
-        self.validators
-    }
+    
+    // Convert into inner representation.
+    // pub fn into_inner(self) -> Vec<Address> {
+    //     self.validators
+    // }
 }
 
 impl ::std::ops::Deref for SimpleList {

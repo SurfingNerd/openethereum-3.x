@@ -18,7 +18,7 @@
 
 use super::trace::{Action, Res};
 use ethereum_types::Bloom;
-use parity_util_mem::MallocSizeOf;
+
 use rlp::{Decodable, DecoderError, Encodable, Rlp, RlpStream};
 
 /// Trace localized in vector of traces produced by a single transaction.

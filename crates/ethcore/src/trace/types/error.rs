@@ -16,7 +16,7 @@
 
 //! Trace errors.
 
-use parity_util_mem::MallocSizeOf;
+
 use rlp::{Decodable, DecoderError, Encodable, Rlp, RlpStream};
 use std::fmt;
 use vm::Error as VmError;

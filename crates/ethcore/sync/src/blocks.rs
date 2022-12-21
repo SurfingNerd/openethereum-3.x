@@ -19,7 +19,7 @@ use ethcore::verification::queue::kind::blocks::Unverified;
 use ethereum_types::H256;
 use hash::{keccak, KECCAK_EMPTY_LIST_RLP, KECCAK_NULL_RLP};
 use network;
-use parity_util_mem::MallocSizeOf;
+
 use rlp::{DecoderError, Rlp, RlpStream};
 use std::collections::{hash_map, BTreeMap, HashMap, HashSet};
 use triehash_ethereum::ordered_trie_root;

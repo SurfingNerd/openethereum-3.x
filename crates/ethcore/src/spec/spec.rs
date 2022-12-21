@@ -36,7 +36,7 @@ use vm::{AccessList, ActionParams, ActionValue, CallType, EnvInfo, ParamsType};
 
 use builtin::Builtin;
 use engines::{
-    AuthorityRound, BasicAuthority, Clique, EthEngine, HoneyBadgerBFT, InstantSeal,
+    BasicAuthority, EthEngine, HoneyBadgerBFT, InstantSeal,
     InstantSealParams, NullEngine, DEFAULT_BLOCKHASH_CONTRACT,
 };
 use error::Error;
@@ -807,12 +807,8 @@ impl Spec {
             ethjson::spec::Engine::BasicAuthority(basic_authority) => {
                 Arc::new(BasicAuthority::new(basic_authority.params.into(), machine))
             }
-            ethjson::spec::Engine::Clique(clique) => Clique::new(clique.params.into(), machine)
-                .expect("Failed to start Clique consensus engine."),
-            ethjson::spec::Engine::AuthorityRound(authority_round) => {
-                AuthorityRound::new(authority_round.params.into(), machine)
-                    .expect("Failed to start AuthorityRound consensus engine.")
-            }
+            ethjson::spec::Engine::Clique(_clique) => panic!("Clique not supported anymore"),
+            ethjson::spec::Engine::AuthorityRound(_authority_round) => panic!("AuthorityRound not supported anymore"),
             ethjson::spec::Engine::Hbbft(hbbft) => {
                 HoneyBadgerBFT::new(hbbft.params.into(), machine)
                     .expect("Failed to start AuthorityRound consensus engine.")

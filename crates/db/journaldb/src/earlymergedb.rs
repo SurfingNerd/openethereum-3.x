@@ -31,7 +31,7 @@ use ethereum_types::H256;
 use hash_db::HashDB;
 use keccak_hasher::KeccakHasher;
 use memory_db::*;
-use parity_util_mem::MallocSizeOf;
+
 use parking_lot::RwLock;
 use rlp::{decode, encode};
 use util::{DatabaseKey, DatabaseValueRef, DatabaseValueView};

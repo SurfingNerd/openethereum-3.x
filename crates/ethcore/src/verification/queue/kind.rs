@@ -20,7 +20,6 @@ use engines::EthEngine;
 use error::Error;
 
 use ethereum_types::{H256, U256};
-use parity_util_mem::MallocSizeOf;
 
 pub use self::{blocks::Blocks, headers::Headers};
 
@@ -89,7 +88,6 @@ pub mod blocks {
 
     use bytes::Bytes;
     use ethereum_types::{H256, U256};
-    use parity_util_mem::MallocSizeOf;
 
     /// A mode for verifying blocks.
     pub struct Blocks;

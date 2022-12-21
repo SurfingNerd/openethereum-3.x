@@ -39,7 +39,7 @@ impl Contribution {
             .map(|txn| {
                 let mut s = RlpStream::new();
                 txn.rlp_append(&mut s);
-                s.drain()
+                s.out().to_vec()
             })
             .collect();
         let mut rng = rand_065::thread_rng();

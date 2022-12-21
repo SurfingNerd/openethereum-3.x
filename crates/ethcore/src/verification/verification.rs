@@ -28,7 +28,6 @@ use std::{
 
 use bytes::Bytes;
 use hash::keccak;
-use parity_util_mem::MallocSizeOf;
 use rlp::Rlp;
 use triehash::ordered_trie_root;
 use unexpected::{Mismatch, OutOfBounds};

@@ -102,7 +102,7 @@ fn encode_first_proof(header: &Header, state_items: &[Vec<u8>]) -> Bytes {
         stream.append(item);
     }
 
-    stream.out()
+    stream.out().to_vec()
 }
 
 // check a first proof: fetch the validator set at the given block.
@@ -190,7 +190,7 @@ fn encode_proof(header: &Header, receipts: &[TypedReceipt]) -> Bytes {
     let mut stream = RlpStream::new_list(2);
     stream.append(header);
     TypedReceipt::rlp_append_list(&mut stream, receipts);
-    stream.drain()
+    stream.out().to_vec()
 }
 
 fn decode_proof(

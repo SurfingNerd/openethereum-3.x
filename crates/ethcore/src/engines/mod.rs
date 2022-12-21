@@ -16,9 +16,10 @@
 
 //! Consensus engine specification and basic implementations.
 
-mod authority_round;
+// authoritoy round deactivated for now.
+
+// mod authority_round;
 mod basic_authority;
-mod clique;
 mod hbbft;
 mod instant_seal;
 mod null_engine;
@@ -28,9 +29,8 @@ pub mod block_reward;
 pub mod signer;
 
 pub use self::{
-    authority_round::AuthorityRound,
+    // authority_round::AuthorityRound,
     basic_authority::BasicAuthority,
-    clique::Clique,
     hbbft::HoneyBadgerBFT,
     instant_seal::{InstantSeal, InstantSealParams},
     null_engine::NullEngine,

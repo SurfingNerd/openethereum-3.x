@@ -23,7 +23,7 @@ use std::sync::{
 
 use bytes::Bytes;
 use ethereum_types::{Address, H256};
-use parity_util_mem::MallocSizeOf;
+
 use types::{header::Header, BlockNumber};
 
 use super::{SimpleList, SystemCall, ValidatorSet};

@@ -22,7 +22,6 @@ use db::{self, cache_manager::CacheManager, CacheUpdatePolicy, Key, Readable, Wr
 use ethereum_types::{H256, H264};
 use kvdb::DBTransaction;
 use lazy_static::__Deref;
-use parity_util_mem::MallocSizeOfExt;
 use parking_lot::RwLock;
 use types::BlockNumber;
 
