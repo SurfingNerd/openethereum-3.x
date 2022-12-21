@@ -50,7 +50,7 @@ fn rlp_append_block(block: &Unverified) -> Vec<u8> {
     rlps.append(&block.header);
     UnverifiedTransaction::rlp_append_list(&mut rlps, &block.transactions);
     rlps.append_list(&block.uncles);
-    rlps.out()
+    rlps.out().to_vec()
 }
 
 pub fn is_same_block(ref_block: &Block, block: &Unverified) -> bool {

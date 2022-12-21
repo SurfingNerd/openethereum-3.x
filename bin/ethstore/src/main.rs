@@ -236,10 +236,8 @@ where
     let store = EthStore::open(key_dir(&args.flag_dir, None)?)?;
 
     return if args.cmd_insert {
-        let secret = args
-            .arg_secret
-            .parse()
-            .map_err(|_| ethstore::Error::InvalidSecret)?;
+        let secret = Secret::copy_from_str(&args.arg_secret).map_err(|_| ethstore::Error::InvalidSecret)?;
+
         let password = load_password(&args.arg_password)?;
         let vault_ref = open_args_vault(&store, &args)?;
         let account_ref = store.insert_account(vault_ref, secret, &password)?;

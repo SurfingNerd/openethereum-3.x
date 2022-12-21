@@ -360,7 +360,7 @@ pub fn json_executive_test<H: FnMut(&str, HookType)>(
             for l in &substate.logs {
                 rlp.append(l);
             }
-            keccak(&rlp.drain())
+            keccak(&rlp.out().to_vec())
         };
 
         match res {
