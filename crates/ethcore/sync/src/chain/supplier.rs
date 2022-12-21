@@ -402,7 +402,7 @@ impl SyncSupplier {
                 if total_bytes > PAYLOAD_SOFT_LIMIT {
                     break;
                 }
-                data.append(&receipts_bytes.to_vec());
+                data.append(&mut receipts_bytes.to_vec());
                 added_headers += 1;
             }
         }

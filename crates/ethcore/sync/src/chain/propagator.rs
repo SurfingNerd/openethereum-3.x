@@ -207,7 +207,7 @@ impl SyncPropagator {
                         all_transactions_rlp.clone()
                     }
                 };
-                send_packet(io, peer_id, is_hashes, all_transactions_hashes.len(), rlp);
+                send_packet(io, peer_id, is_hashes, all_transactions_hashes.len(), rlp.to_vec());
                 sent_to_peers.insert(peer_id);
                 max_sent = cmp::max(max_sent, all_transactions_hashes.len());
                 continue;
@@ -264,7 +264,7 @@ impl SyncPropagator {
                 .chain(&to_send)
                 .cloned()
                 .collect();
-            send_packet(io, peer_id, is_hashes, to_send.len(), packet.out());
+            send_packet(io, peer_id, is_hashes, to_send.len(), packet.out().to_vec());
             sent_to_peers.insert(peer_id);
             max_sent = cmp::max(max_sent, to_send.len());
         }
