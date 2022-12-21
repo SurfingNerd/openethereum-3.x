@@ -170,7 +170,7 @@ mod tests {
 
         assert!(engine.verify_block_basic(&header).is_ok());
 
-        header.set_seal(vec![::rlp::encode(&H520::default())]);
+        header.set_seal(vec![::rlp::encode(&H520::default()).to_vec()]);
 
         assert!(engine.verify_block_unordered(&header).is_ok());
     }

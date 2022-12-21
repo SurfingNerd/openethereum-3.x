@@ -257,7 +257,7 @@ mod tests {
     fn test_synckeygen_initialization() {
         // Create a keypair
         let secret =
-            Secret::from_str("49c437676c600660905204e5f3710a6db5d3f46e3da9ba5168b9d34b0b787317")
+            Secret::copy_from_str("49c437676c600660905204e5f3710a6db5d3f46e3da9ba5168b9d34b0b787317")
                 .unwrap();
         let keypair = KeyPair::from_secret(secret).expect("KeyPair generation must succeed");
         let public = keypair.public().clone();

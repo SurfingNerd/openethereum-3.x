@@ -62,7 +62,7 @@ pub fn create_test_block(header: &Header) -> Bytes {
     rlp.append(header);
     rlp.append_raw(&rlp::EMPTY_LIST_RLP, 1);
     rlp.append_raw(&rlp::EMPTY_LIST_RLP, 1);
-    rlp.out()
+    rlp.out().to_vec()
 }
 
 fn create_unverifiable_block_header(order: u32, parent_hash: H256) -> Header {
@@ -111,7 +111,7 @@ pub fn create_test_block_with_data(
         t.rlp_append(&mut rlp);
     }
     rlp.append_list(&uncles);
-    rlp.out()
+    rlp.out().to_vec()
 }
 
 /// Generates dummy client (not test client) with corresponding amount of blocks

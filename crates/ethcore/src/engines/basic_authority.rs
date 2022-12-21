@@ -260,7 +260,7 @@ mod tests {
     fn can_do_signature_verification_fail() {
         let engine = new_test_authority().engine;
         let mut header: Header = Header::default();
-        header.set_seal(vec![::rlp::encode(&H520::default())]);
+        header.set_seal(vec![::rlp::encode(&H520::default()).to_vec()]);
 
         let verify_result = engine.verify_block_external(&header);
         assert!(verify_result.is_err());

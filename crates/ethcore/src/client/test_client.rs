@@ -316,16 +316,16 @@ impl TestBlockChainClient {
                 }
 
                 self.nonces.write().insert(keypair.address(), nonce);
-                txs.out()
+                txs.out().to_vec()
             }
-            _ => ::rlp::EMPTY_LIST_RLP.to_vec(),
+            _ => Vec::from(::rlp::EMPTY_LIST_RLP),
         };
 
         let mut rlp = RlpStream::new_list(3);
         rlp.append(&header);
         rlp.append_raw(&txs, 1);
         rlp.append_raw(uncles.as_raw(), 1);
-        let unverified = Unverified::from_rlp(rlp.out(), BlockNumber::max_value()).unwrap();
+        let unverified = Unverified::from_rlp(rlp.out().to_vec(), BlockNumber::max_value()).unwrap();
         self.import_block(unverified).unwrap();
     }
 
@@ -349,7 +349,7 @@ impl TestBlockChainClient {
         rlp.append(&header);
         rlp.append_raw(&::rlp::NULL_RLP, 1);
         rlp.append_raw(&::rlp::NULL_RLP, 1);
-        self.blocks.write().insert(hash, rlp.out());
+        self.blocks.write().insert(hash, rlp.out().to_vec());
     }
 
     /// Get block hash with `delta` as offset from the most recent blocks.
@@ -893,7 +893,7 @@ impl BlockChainClient for TestBlockChainClient {
                 let mut stream = RlpStream::new_list(2);
                 stream.append_raw(block.transactions_rlp().as_raw(), 1);
                 stream.append_raw(block.uncles_rlp().as_raw(), 1);
-                encoded::Body::new(stream.out())
+                encoded::Body::new(stream.out().to_vec())
             })
         })
     }
@@ -1118,7 +1118,7 @@ impl BlockChainClient for TestBlockChainClient {
         if *hash > begins_with_f {
             let mut rlp = RlpStream::new();
             rlp.append(&hash.clone());
-            return Some(rlp.out());
+            return Some(rlp.out().to_vec());
         } else if *hash
             == H256::from_str("000000000000000000000000000000000000000000000000000000000000000a")
                 .unwrap()

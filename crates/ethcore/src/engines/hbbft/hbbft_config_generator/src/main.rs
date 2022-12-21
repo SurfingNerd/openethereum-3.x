@@ -362,7 +362,7 @@ fn main() {
         .values_of("private_keys")
         .map_or(Vec::new(), |values| {
             values
-                .map(|v| Secret::from_str(v).expect("Secret key format must be correct!"))
+                .map(|v| Secret::copy_from_str(v).expect("Secret key format must be correct!"))
                 .collect()
         });
 
