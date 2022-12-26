@@ -35,6 +35,7 @@ parking_lot = "0.11.1"
 rand = "0.7.3"
 rand_xorshift = "0.2.0"
 rlp = { version = "0.5.2" }
+fastrlp = { version = "0.2", features = ["derive"] }
 trace-time = "0.1"
 triehash-ethereum = {version = "0.2", path = "../../util/triehash-ethereum" }
 stats = { path = "../../util/stats" }
