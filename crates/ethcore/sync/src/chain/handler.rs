@@ -23,12 +23,14 @@ use ethcore::{
     snapshot::{ManifestData, RestorationStatus},
     verification::queue::kind::blocks::Unverified,
 };
+use ethereum_forkid::{ForkId, ForkHash, ValidationError};
 use ethereum_types::{H256, H512, U256};
 use hash::keccak;
 use network::{client_version::ClientVersion, PeerId};
 use rlp::Rlp;
+use rustc_hex::ToHex;
 use snapshot::ChunkType;
-use std::{cmp, mem, time::Instant};
+use std::{cmp, mem, time::Instant, convert::TryInto};
 use sync_io::SyncIo;
 use types::{block_status::BlockStatus, ids::BlockId, BlockNumber};
 
@@ -724,11 +726,42 @@ impl SyncHandler {
             .next()
             .ok_or(rlp::DecoderError::RlpIsTooShort)?
             .as_val()?;
-        let forkid_validation_error = if eth_protocol_version >= ETH_PROTOCOL_VERSION_64.0 {
-            let fork_id = r_iter
+        let forkid_validation_error= if eth_protocol_version >= ETH_PROTOCOL_VERSION_64.0 {
+            let fork_id_rlp = r_iter
                 .next()
-                .ok_or(rlp::DecoderError::RlpIsTooShort)?
-                .as_val()?;
+                .ok_or(fastrlp::DecodeError::InputTooShort)?;
+                
+            
+            let fork_id_raw = fork_id_rlp.as_raw();
+
+            
+            
+            //let fast_rlp = fastrlp::Rlp::new(fork_id_rlp.as_raw())?;
+
+            // self.0 = crc32::update(u32::from_be_bytes(self.0), &crc32::IEEE_TABLE, &blob).to_be_bytes();
+
+            // check if we have knowledge about the next fork block.
+            //fork_id_raw.len()
+
+            
+            //let fork_id: ForkId = fork_id_rlp.as_val()?;
+            let fork_id : ForkId = if fork_id_raw.len() < 4 {
+                return Err(rlp::DecoderError::RlpIsTooShort.into());
+            } else if fork_id_raw.len() == 4 {
+                let fork_hash_raw: [u8;4] = fork_id_raw[0..4].try_into().unwrap();
+                let fork_hash : ForkHash = ForkHash(fork_hash_raw);
+                ForkId {hash: fork_hash, next: 0}
+            } else if fork_id_raw.len() == 12 {
+                let fork_hash_raw: [u8;4] = fork_id_raw[0..4].try_into().unwrap();
+                let fork_hash : ForkHash = ForkHash(fork_hash_raw);
+                let fork_block: u64 = u64::from_be_bytes(fork_id_raw[4..12].try_into().unwrap());
+                ForkId {hash: fork_hash, next: fork_block }
+            } else {
+                // rlp::DecoderError::Custom("Invalid fork id length".into()
+                warn!(target: "sync", "dropping peer: {} could not interprete fork ID {:?}", peer_id, fork_id_raw);
+                return Err(DownloaderImportError::Invalid); 
+            };
+            
             sync.fork_filter
                 .is_compatible(io.chain(), fork_id)
                 .err()
@@ -747,7 +780,7 @@ impl SyncHandler {
             None
         };
         let snapshot_number = if warp_protocol {
-            Some(
+            Some(validation
                 r_iter
                     .next()
                     .ok_or(rlp::DecoderError::RlpIsTooShort)?
@@ -817,7 +850,7 @@ impl SyncHandler {
         }
 
         if let Some((fork_id, reason)) = forkid_validation_error {
-            trace!(target: "sync", "Peer {} incompatible fork id (fork id: {:#x}/{}, error: {:?})", peer_id, fork_id.hash.0, fork_id.next, reason);
+            trace!(target: "sync", "Peer {} incompatible fork id (fork id: {}/{}, error: {:?})", peer_id, fork_id.hash.0.to_hex(), fork_id.next, reason);
             return Err(DownloaderImportError::Invalid);
         }
 
