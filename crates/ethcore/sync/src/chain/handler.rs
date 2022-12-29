@@ -34,6 +34,8 @@ use std::{cmp, mem, time::Instant, convert::TryInto};
 use sync_io::SyncIo;
 use types::{block_status::BlockStatus, ids::BlockId, BlockNumber};
 
+use crate::block_sync::BlockDownloader;
+
 use super::{
     request_id::strip_request_id,
     sync_packet::{
@@ -729,7 +731,8 @@ impl SyncHandler {
         let forkid_validation_error= if eth_protocol_version >= ETH_PROTOCOL_VERSION_64.0 {
             let fork_id_rlp = r_iter
                 .next()
-                .ok_or(fastrlp::DecodeError::InputTooShort)?;
+                .ok_or(fastrlp::DecodeError::InputTooShort)
+                .map_err(|e| DownloaderImportError::Invalid)?;
                 
             
             let fork_id_raw = fork_id_rlp.as_raw();
@@ -780,7 +783,7 @@ impl SyncHandler {
             None
         };
         let snapshot_number = if warp_protocol {
-            Some(validation
+            Some(
                 r_iter
                     .next()
                     .ok_or(rlp::DecoderError::RlpIsTooShort)?
@@ -850,7 +853,8 @@ impl SyncHandler {
         }
 
         if let Some((fork_id, reason)) = forkid_validation_error {
-            trace!(target: "sync", "Peer {} incompatible fork id (fork id: {}/{}, error: {:?})", peer_id, fork_id.hash.0.to_hex(), fork_id.next, reason);
+            
+            trace!(target: "sync", "Peer {} incompatible fork id (fork id: {}/{}, error: {:?})", peer_id, fork_id.hash.0.to_hex() , fork_id.next, reason);
             return Err(DownloaderImportError::Invalid);
         }
 

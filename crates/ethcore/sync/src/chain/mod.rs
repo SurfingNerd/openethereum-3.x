@@ -94,6 +94,9 @@ pub mod request_id;
 mod requester;
 mod supplier;
 pub mod sync_packet;
+mod fast_rlp_wrapper;
+
+use crate::chain::fast_rlp_wrapper::ForkIdEncodableAdapter;
 
 pub use self::fork_filter::ForkFilterApi;
 use super::{SyncConfig, WarpSync};
@@ -1519,7 +1522,9 @@ impl ChainSync {
         packet.append(&primitive_types::H256(chain.best_block_hash.0));
         packet.append(&primitive_types::H256(chain.genesis_hash.0));
         if eth_protocol_version >= ETH_PROTOCOL_VERSION_64.0 {
-            packet.append(&self.fork_filter.current(io.chain()));
+            let fork_id = self.fork_filter.current(io.chain());
+            let adapter = ForkIdEncodableAdapter(fork_id);
+            packet.append(&adapter);
         }
         if warp_protocol {
             let manifest = io.snapshot_service().manifest();
@@ -1735,7 +1740,7 @@ impl ChainSync {
 
         if !is_syncing && !enacted.is_empty() && !self.peers.is_empty() {
             // t_nb 11.4.5 Select random peer to re-broadcast transactions to.
-            let peer = random::new().gen_range(0, self.peers.len());
+            let peer = random::new().gen_range(0..self.peers.len());
             trace!(target: "sync", "Re-broadcasting transactions to a random peer.");
             self.peers.values_mut().nth(peer).map(|peer_info| {
                 peer_info.last_sent_transactions.clear();

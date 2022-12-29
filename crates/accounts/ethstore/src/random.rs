@@ -43,5 +43,6 @@ impl Random for [u8; 32] {
 /// Generate a random string of given length.
 pub fn random_string(length: usize) -> String {
     let rng = OsRng;
-    rng.sample_iter(&Alphanumeric).take(length).collect()
+    rng.sample_iter(&Alphanumeric).map(|b| b as char).take(length).collect()
+    //rng.sample_iter(&Alphanumeric).take(length).collect()
 }

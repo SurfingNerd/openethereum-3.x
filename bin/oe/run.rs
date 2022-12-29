@@ -45,7 +45,7 @@ use ethcore::{
     client::{
         BlockChainClient, BlockInfo, ChainSyncing, Client, DatabaseCompactionProfile, Mode, VMType,
     },
-    miner::{self, stratum, Miner, MinerOptions, MinerService},
+    miner::{self, Miner, MinerOptions, MinerService},
     snapshot::{self, SnapshotConfiguration},
     verification::queue::VerifierSettings,
 };
@@ -101,7 +101,6 @@ pub struct RunCmd {
     pub secretstore_conf: secretstore::Configuration,
     pub name: String,
     pub custom_bootnodes: bool,
-    pub stratum: Option<stratum::Options>,
     pub snapshot_conf: SnapshotConfiguration,
     pub check_seal: bool,
     pub allow_missing_blocks: bool,
@@ -454,12 +453,6 @@ pub fn execute(cmd: RunCmd, logger: Arc<RotatingLogger>) -> Result<RunningClient
 
     // create external miner
     let external_miner = Arc::new(ExternalMiner::default());
-
-    // start stratum
-    if let Some(ref stratum_config) = cmd.stratum {
-        stratum::Stratum::register(stratum_config, miner.clone(), Arc::downgrade(&client))
-            .map_err(|e| format!("Stratum start error: {:?}", e))?;
-    }
 
     // create sync object
     let (sync_provider, manage_network, chain_notify, priority_tasks, new_transaction_hashes) =

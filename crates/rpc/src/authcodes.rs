@@ -188,6 +188,7 @@ impl<T: TimeProvider> AuthCodes<T> {
         let code = rng
             .sample_iter(&Alphanumeric)
             .take(TOKEN_LENGTH)
+            .map(|c| c as char)
             .collect::<String>();
         let readable_code = code
             .as_bytes()

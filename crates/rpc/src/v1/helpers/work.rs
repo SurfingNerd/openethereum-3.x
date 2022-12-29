@@ -34,7 +34,8 @@ pub fn submit_work_detail<C: BlockChainClient, M: MinerService>(
 ) -> Result<H256, Error> {
     // TODO [ToDr] Should disallow submissions in case of PoA?
     trace!(target: "miner", "submit_work_detail: Decoded: nonce={}, pow_hash={}, mix_hash={}", nonce, pow_hash, mix_hash);
-    let seal = vec![rlp::encode(&mix_hash), rlp::encode(&nonce)];
+    let seal = vec![rlp::encode(&mix_hash).to_vec(), rlp::encode(&nonce).to_vec()];
+    
     miner
         .submit_seal(pow_hash, seal)
         .and_then(|block| client.import_sealed_block(block))

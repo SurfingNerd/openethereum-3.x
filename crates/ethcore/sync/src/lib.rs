@@ -44,6 +44,8 @@ extern crate rand_xorshift;
 extern crate rlp;
 extern crate stats;
 extern crate triehash_ethereum;
+extern crate fastrlp;
+extern crate rustc_hex;
 
 #[cfg(test)]
 extern crate env_logger;

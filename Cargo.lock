@@ -1294,8 +1294,8 @@ dependencies = [
  "parking_lot 0.11.1",
  "patricia-trie-ethereum",
  "rand 0.6.5",
- "rand 0.7.3",
- "rand_xorshift 0.2.0",
+ "rand 0.8.5",
+ "rand_xorshift 0.3.0",
  "rayon",
  "regex 1.7.0",
  "reth-util",
@@ -1360,7 +1360,7 @@ dependencies = [
  "parity-crypto",
  "parity-util-mem",
  "parking_lot 0.11.1",
- "rand 0.7.3",
+ "rand 0.8.5",
  "rayon",
  "rlp 0.5.2",
  "rlp_compress",
@@ -1539,7 +1539,7 @@ dependencies = [
  "parity-path",
  "parity-snappy",
  "parking_lot 0.11.1",
- "rand 0.7.3",
+ "rand 0.8.5",
  "rlp 0.5.2",
  "rust-crypto",
  "rustc-hex 1.0.0",
@@ -1602,8 +1602,8 @@ dependencies = [
  "parity-util-mem",
  "parking_lot 0.11.1",
  "primitive-types 0.12.1",
- "rand 0.7.3",
- "rand_xorshift 0.2.0",
+ "rand 0.8.5",
+ "rand_xorshift 0.3.0",
  "rlp 0.5.2",
  "rustc-hex 1.0.0",
  "stats",
@@ -1680,7 +1680,7 @@ dependencies = [
  "parity-crypto",
  "parity-wordlist",
  "quick-error",
- "rand 0.7.3",
+ "rand 0.8.5",
  "rustc-hex 1.0.0",
  "serde",
  "serde_derive",
@@ -1717,7 +1717,7 @@ dependencies = [
  "parity-crypto",
  "parity-wordlist",
  "parking_lot 0.11.1",
- "rand 0.7.3",
+ "rand 0.8.5",
  "rustc-hex 1.0.0",
  "serde",
  "serde_derive",
@@ -2236,7 +2236,7 @@ dependencies = [
  "hbbft 0.1.1 (git+https://github.com/poanetwork/hbbft?rev=4857b7f9c7a0f513caca97c308d352c6a77fe5c2)",
  "hbbft_testing",
  "parity-crypto",
- "rand 0.6.5",
+ "rand 0.8.5",
  "rustc-hex 2.1.0",
  "serde",
  "serde_json",
@@ -3824,7 +3824,7 @@ dependencies = [
  "parity-version",
  "parking_lot 0.11.1",
  "pretty_assertions",
- "rand 0.7.3",
+ "rand 0.8.5",
  "rand_xorshift 0.2.0",
  "rlp 0.5.2",
  "rustc-hex 1.0.0",
@@ -4762,6 +4762,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "77d416b86801d23dde1aa643023b775c3a462efc0ed96443add11546cdf1dca8"
 dependencies = [
  "rand_core 0.5.1",
+]
+
+[[package]]
+name = "rand_xorshift"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d25bf25ec5ae4a3f1b92f929810509a2f53d7dca2f50b794ff57e3face536c8f"
+dependencies = [
+ "rand_core 0.6.4",
 ]
 
 [[package]]
