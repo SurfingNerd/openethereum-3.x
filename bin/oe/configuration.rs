@@ -801,8 +801,8 @@ impl Configuration {
         ret.listen_address = Some(format!("{}", listen));
         ret.public_address = public.map(|p| format!("{}", p));
         ret.use_secret = match self.args.arg_node_key.as_ref().map(|s| {
-
-            Secret::try_from(s)
+            
+            Secret::copy_from_str(s)
                 .or_else(|_| Secret::import_key(keccak(s).as_bytes()))
                 .map_err(|e| format!("Invalid key: {:?}", e))
         }) {
@@ -1067,11 +1067,15 @@ impl Configuration {
 
     fn secretstore_self_secret(&self) -> Result<Option<NodeSecretKey>, String> {
         match self.args.arg_secretstore_secret {
-			Some(ref s) if s.len() == 64 => Ok(Some(NodeSecretKey::Plain(s.parse()
+            
+			Some(ref s) if s.len() == 64 => Ok(Some(NodeSecretKey::Plain(Secret::copy_from_str(s)
 				.map_err(|e| format!("Invalid secret store secret: {}. Error: {:?}", s, e))?))),
 			#[cfg(feature = "accounts")]
-			Some(ref s) if s.len() == 40 => Ok(Some(NodeSecretKey::KeyStore(s.parse()
-				.map_err(|e| format!("Invalid secret store secret address: {}. Error: {:?}", s, e))?))),
+			Some(ref s) {
+                let h160 : H160;
+                if s.len() == 40 => Ok(Some(NodeSecretKey::KeyStore(Secret::copy_from_str(s))))
+            }
+			// 	.map_err(|e| format!("Invalid secret store secret address: {}. Error: {:?}", s, e))?))),
 			Some(_) => Err(format!("Invalid secret store secret. Must be either existing account address, or hex-encoded private key")),
 			None => Ok(None),
 		}
