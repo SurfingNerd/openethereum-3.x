@@ -268,27 +268,11 @@ impl IoHandler<()> for TransitionHandler {
                                             }
                                         }
                                     }
-                                    //TODO: implement shutdown.
-                                    // panic!("Shutdown hard. Todo: implement Soft Shutdown.");
-                                    //if let c = self.engine.client.read() {
-                                    //}
 
                                     let id: usize = std::process::id() as usize;
-
                                     let thread_id = std::thread::current().id();
-
-                                    //let child_id = std::process::en;
-
                                     info!(target: "engine", "Waiting for Signaling shutdown to process ID: {id} thread: {:?}", thread_id);
-
-                                    // Using libc resulted in errors.
-                                    // can't a process not send a signal to it's own ?!
-
-                                    // unsafe {
-                                    //    let signal_result = libc::signal(libc::SIGTERM, id);
-                                    //    info!(target: "engine", "Signal result: {signal_result}");
-                                    // }
-
+                                    // todo: rewrite this to a proper shutdown
                                     let child = Command::new("/bin/kill")
                                         .arg(id.to_string())
                                         .spawn()
@@ -296,26 +280,6 @@ impl IoHandler<()> for TransitionHandler {
 
                                     let kill_id = child.id();
                                     info!(target: "engine", "Signaling shutdown SENT to process ID: {id} with process: {kill_id} ");
-
-                                    // if let Some(ref weak) = *self.client.read() {
-                                    //     if let Some(client) = weak.upgrade() {
-
-                                    // match client.as_full_client() {
-                                    //     Some(full_client) => {
-                                    //         //full_client.shutdown();
-                                    //     }
-                                    //     None => {
-
-                                    //     }
-                                    // }
-
-                                    // match client.as_full_client() {
-                                    //     Some(full_client) => full_client.is_major_syncing(),
-                                    //     // We only support full clients at this point.
-                                    //     None => true,
-                                    // }
-                                    //     }
-                                    // }
                                 }
                                 // if the node is available, everythign is fine!
                             }
@@ -780,7 +744,7 @@ impl HoneyBadgerBFT {
             let address = match self.signer.read().as_ref() {
                 Some(signer) => signer.address(),
                 None => {
-                    // warn!("Could not retrieve address for writing availability transaction.");
+                    warn!(target: "engine", "Could not get signer for writing availability transaction.");
                     return Ok(());
                 }
             };
@@ -929,35 +893,32 @@ impl HoneyBadgerBFT {
     /** returns if the signer of hbbft is tracked as available in the hbbft contracts. */
     pub fn is_available(&self) -> Result<bool, Error> {
         match self.signer.read().as_ref() {
-            Some(signer) => {
-                match self.client_arc() {
-                    Some(client) => {
-                        let engine_client = client.deref();
-                        let mining_address = signer.address();
+            Some(signer) => match self.client_arc() {
+                Some(client) => {
+                    let engine_client = client.deref();
+                    let mining_address = signer.address();
 
-                        if mining_address.is_zero() {
-                            debug!(target: "consensus", "is_available: not available because mining address is zero: ");
-                            return Ok(false);
-                        }
-                        match super::contracts::validator_set::get_validator_available_since(
-                            engine_client,
-                            &mining_address,
-                        ) {
-                            Ok(available_since) => {
-                                debug!(target: "consensus", "available_since: {}", available_since);
-                                return Ok(!available_since.is_zero());
-                            }
-                            Err(err) => {
-                                warn!(target: "consensus", "Error get get_validator_available_since: ! {:?}", err);
-                            }
-                        }
+                    if mining_address.is_zero() {
+                        debug!(target: "consensus", "is_available: not available because mining address is zero: ");
+                        return Ok(false);
                     }
-                    None => {
-                        // warn!("Could not retrieve address for writing availability transaction.");
-                        warn!(target: "consensus", "is_available: could not get engine client");
+                    match super::contracts::validator_set::get_validator_available_since(
+                        engine_client,
+                        &mining_address,
+                    ) {
+                        Ok(available_since) => {
+                            debug!(target: "consensus", "available_since: {}", available_since);
+                            return Ok(!available_since.is_zero());
+                        }
+                        Err(err) => {
+                            warn!(target: "consensus", "Error get get_validator_available_since: ! {:?}", err);
+                        }
                     }
                 }
-            }
+                None => {
+                    warn!(target: "consensus", "is_available: could not get engine client");
+                }
+            },
             None => {}
         }
         return Ok(false);
@@ -1109,7 +1070,6 @@ impl Engine<EthereumMachine> for HoneyBadgerBFT {
     }
 
     fn register_client(&self, client: Weak<dyn EngineClient>) {
-        warn!(target: "engine", "register_client");
         *self.client.write() = Some(client.clone());
         if let Some(client) = self.client_arc() {
             let mut state = self.hbbft_state.write();
@@ -1117,7 +1077,7 @@ impl Engine<EthereumMachine> for HoneyBadgerBFT {
                 Some(_) => {
                     let posdao_epoch = state.get_current_posdao_epoch();
                     let epoch_start_block = state.get_current_posdao_epoch_start_block();
-                    warn!(target: "engine", "report new epoch: {} at block: {}", posdao_epoch, epoch_start_block);
+                    trace!(target: "engine", "report new epoch: {} at block: {}", posdao_epoch, epoch_start_block);
                     self.hbbft_message_dispatcher
                         .report_new_epoch(posdao_epoch, epoch_start_block);
                 }
@@ -1129,7 +1089,7 @@ impl Engine<EthereumMachine> for HoneyBadgerBFT {
     fn set_signer(&self, signer: Option<Box<dyn EngineSigner>>) {
         *self.signer.write() = signer;
         if let Some(client) = self.client_arc() {
-            warn!(target: "engine", "set_signer - update_honeybadger...");
+            trace!(target: "engine", "set_signer - update_honeybadger...");
             if let None = self.hbbft_state.write().update_honeybadger(
                 client,
                 &self.signer,
@@ -1247,14 +1207,14 @@ impl Engine<EthereumMachine> for HoneyBadgerBFT {
                 // so we only accept data with the correct length.
                 let r_ = if extra_data.len() == 32 {
                     let r = U256::from_big_endian(extra_data);
-                    warn!(
+                    trace!(target: "consensus",
                         "restored random number from header for block {} random number: {:?}",
                         block.header.number(),
                         r
                     );
                     r
                 } else if extra_data.len() == 6 && extra_data == &[80, 97, 114, 105, 116, 121] {
-                    warn!("detected Parity as random number, ignoring.",);
+                    trace!(target: "consensus", "detected Parity as random number, ignoring.",);
                     return Ok(());
                 } else {
                     return Err(EngineError::Custom(
@@ -1272,7 +1232,7 @@ impl Engine<EthereumMachine> for HoneyBadgerBFT {
                 r.clone()
             }
         };
-        warn!("random number: {:?}", random_number);
+        trace!(target: "consensus", "random number: {:?}", random_number);
 
         let tx = set_current_seed_tx_raw(&random_number);
 
@@ -1280,7 +1240,7 @@ impl Engine<EthereumMachine> for HoneyBadgerBFT {
         let result = self
             .machine
             .execute_as_system(block, tx.0, U256::max_value(), Some(tx.1));
-        warn!("execution result: {result:?}");
+        trace!(target: "consensus", "execution result: {result:?}");
         return result.map(|_| ());
     }
 
@@ -1289,13 +1249,12 @@ impl Engine<EthereumMachine> for HoneyBadgerBFT {
         let random_numbers = self.random_numbers.read();
         match random_numbers.get(&block.header.number()) {
             None => {
-                warn!("No rng value available for header.");
+                warn!(target: "consensus", "No rng value available for header.");
                 return Ok(());
             }
             Some(r) => {
                 let mut bytes: [u8; 32] = [0; 32];
                 r.to_big_endian(&mut bytes);
-
                 block.header.set_extra_data(bytes.to_vec());
             }
         };

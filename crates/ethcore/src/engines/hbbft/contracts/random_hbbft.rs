@@ -9,9 +9,7 @@ lazy_static! {
 }
 
 pub fn set_current_seed_tx_raw(random_value: &U256) -> (Address, Vec<u8>) {
-    warn!("set_current_seed_tx");
-    //call_const_staking!(c, staking_epoch)
+
     let decoder = random_hbbft_contract::functions::set_current_seed::call(random_value);
-    warn!("call data: {:?}", decoder.0);
     return (RANDOM_HBBFT_CONTRACT_ADDRESS.clone(), decoder.0);
 }
