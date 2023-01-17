@@ -503,7 +503,6 @@ impl HoneyBadgerBFT {
         ) {
             Ok(Some((step, network_info))) => {
                 if step.fault_log.0.is_empty() {
-                    //TODO:  report good message here.
                     self.hbbft_message_dispatcher
                         .report_message_good(&sender_id, message_block);
                 } else {
@@ -515,10 +514,9 @@ impl HoneyBadgerBFT {
                             Some(f.kind.clone()),
                         );
                     }
-
-                    self.process_step(client, step, &network_info);
-                    self.join_hbbft_epoch()?;
                 }
+                self.process_step(client, step, &network_info);
+                self.join_hbbft_epoch()?;
             }
             Ok(None) => {}
             Err(err) => {
