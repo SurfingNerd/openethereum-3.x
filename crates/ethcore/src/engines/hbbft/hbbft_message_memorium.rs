@@ -283,7 +283,7 @@ impl StakingEpochHistory {
     pub fn get_epoch_stats_as_csv(&self) -> String {
         let mut result = String::with_capacity(1024);
         result.push_str(NodeStakingEpochHistory::get_epoch_stats_csv_header().as_str());
-
+        result.push_str("\n");
         for history in self.node_staking_epoch_histories.iter() {
             result.push_str(history.as_csv_lines(self.staking_epoch).as_str());
         }
